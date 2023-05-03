@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{E2C54C96-E4AE-4B73-BE20-C829D2AA24CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{00B8FAD3-A5AA-4654-99D6-F29D13A94014}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditAPI", "API\RedditAPI\RedditAPI.csproj", "{0B598D2E-76F4-4C58-87CD-562E7C526119}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditClient", "Client\Reddit\RedditClient.csproj", "{99EA55C7-875B-4F8C-99AA-953ED8F67C2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B598D2E-76F4-4C58-87CD-562E7C526119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B598D2E-76F4-4C58-87CD-562E7C526119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B598D2E-76F4-4C58-87CD-562E7C526119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B598D2E-76F4-4C58-87CD-562E7C526119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99EA55C7-875B-4F8C-99AA-953ED8F67C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99EA55C7-875B-4F8C-99AA-953ED8F67C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99EA55C7-875B-4F8C-99AA-953ED8F67C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99EA55C7-875B-4F8C-99AA-953ED8F67C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B598D2E-76F4-4C58-87CD-562E7C526119} = {E2C54C96-E4AE-4B73-BE20-C829D2AA24CF}
+		{99EA55C7-875B-4F8C-99AA-953ED8F67C2D} = {00B8FAD3-A5AA-4654-99D6-F29D13A94014}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C0C2FB2-88E1-400F-90A8-BFC47BE38B84}
+	EndGlobalSection
+EndGlobal
