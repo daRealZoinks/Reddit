@@ -1,19 +1,24 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace Client {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
+
+			PopulateUserListBox();
 		}
 
-		private async void JsonData_button_Click(object sender, RoutedEventArgs e) {
-			using(HttpClient httpClient = new HttpClient()) {
-				HttpResponseMessage response = await httpClient.GetAsync("https://localhost:7214/api/User");
-				response.EnsureSuccessStatusCode();
-				string responseBody = await response.Content.ReadAsStringAsync();
-				JsonData_textblock.Text = responseBody;
-			}
+		private void PopulateUserListBox() {
+			var items = new List<string> { "Item 1", "Item 2", "Item 3" };
+			UserListBox.ItemsSource = items;
+		}
+
+		private void UserImage_Click(object sender, RoutedEventArgs e) {
+			if(UserListBox.Visibility == Visibility.Visible)
+				UserListBox.Visibility = Visibility.Collapsed;
+			else if(UserListBox.Visibility == Visibility.Collapsed)
+				UserListBox.Visibility = Visibility.Visible;
 		}
 	}
 }
