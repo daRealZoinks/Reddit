@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,13 +17,31 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+
         <Button x:Name="UserImage" Click="UserImage_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10"></Button>
         <ListBox x:Name="UserListBox" Visibility="Collapsed" Grid.Row="1" HorizontalAlignment="Left"  Width="200" Margin="10"/>
 
         <Button x:Name="SearchButton" Grid.Column="1" HorizontalAlignment="Left" Width="25" Height="25" Margin="10" BorderBrush="{x:Null}">
             <Button.Background>
-                <ImageBrush ImageSource="/search_icon.png"/>
+                <ImageBrush ImageSource="/Assets/Images/search_icon.png"/>
             </Button.Background>
         </Button>
+
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="OpenChatButton" Grid.Row="0" Height="30" Width="30" Click="OpenChatButton_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Assets/Images/chat_icon.png"/>
+                </Button.Background>
+            </Button>
+            <Border Background="Transparent" Grid.Row="1" Height="250" Width="350" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <local:ChatWindowControl x:Name="ChatWindow" Visibility="Collapsed" />
+            </Border>
+        </Grid>
+
     </Grid>
 </Window>

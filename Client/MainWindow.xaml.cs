@@ -3,6 +3,8 @@ using System.Windows;
 
 namespace Client {
 	public partial class MainWindow : Window {
+		private bool isChatWindowOpen = false;
+
 		public MainWindow() {
 			InitializeComponent();
 
@@ -19,6 +21,17 @@ namespace Client {
 				UserListBox.Visibility = Visibility.Collapsed;
 			else if(UserListBox.Visibility == Visibility.Collapsed)
 				UserListBox.Visibility = Visibility.Visible;
+		}
+
+		private void OpenChatButton_Click(object sender, RoutedEventArgs e) {
+			if(ChatWindow.Visibility == Visibility.Collapsed) {
+				ChatWindow.Visibility = Visibility.Visible;
+				OpenChatButton.Content = "Hide Chat";
+			}
+			else if(ChatWindow.Visibility == Visibility.Visible) {
+				ChatWindow.Visibility = Visibility.Collapsed;
+				OpenChatButton.Content = "Show Chat";
+			}
 		}
 	}
 }
