@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Client {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
+		}
+
+		private async void JsonData_button_Click(object sender, RoutedEventArgs e) {
+			using(HttpClient httpClient = new HttpClient()) {
+				HttpResponseMessage response = await httpClient.GetAsync("https://localhost:7214/api/User");
+				response.EnsureSuccessStatusCode();
+				string responseBody = await response.Content.ReadAsStringAsync();
+				JsonData_textblock.Text = responseBody;
+			}
 		}
 	}
 }

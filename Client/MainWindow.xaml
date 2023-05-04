@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top"/>
-
+        <Button x:Name="JsonData_button" Content="test button for pAPI call" HorizontalAlignment="Left" Margin="131,123,0,0" VerticalAlignment="Top" Click="JsonData_button_Click"/>
+        <TextBlock x:Name="JsonData_textblock" Margin="377,25,39,25"></TextBlock>
     </Grid>
 </Window>
