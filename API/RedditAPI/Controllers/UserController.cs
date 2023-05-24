@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RedditAPI.Controllers;
 
-[Route("api/[controller]/{id:int}")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     }
 
     // GET api/<UserController>/5
-    [HttpGet("")]
+    [HttpGet("{id:int}")]
     public IActionResult Get([FromRoute] int id)
     {
         return Ok(_userCollectionService.GetById(id));
@@ -51,7 +51,7 @@ public class UserController : ControllerBase
     }
 
     // DELETE api/<UserController>/5
-    [HttpDelete("")]
+    [HttpDelete("{id:int}")]
     public IActionResult Delete([FromRoute] int id)
     {
         _userCollectionService.Delete(id);
