@@ -1,15 +1,10 @@
-﻿namespace Core.Services
+﻿namespace Core.Services;
+
+public interface ICollectionService<T> where T : new()
 {
-    public interface ICollectionService<T> where T : new()
-    {
-        List<T> GetAll();
-
-        T? Get(Guid id);
-
-        void Create(T model);
-
-        void Update(T model);
-
-        void Delete(Guid id);
-    }
+    void Add(T entity);
+    List<T> GetAll();
+    T? GetById(int id);
+    void Update(T entity);
+    void Delete(int id);
 }

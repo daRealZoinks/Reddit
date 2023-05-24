@@ -1,17 +1,14 @@
 using Core.Services;
+using DataLayer;
+using DataLayer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
-
 // Add services to the container.
+builder.Services.AddSingleton<AppDbContext>();
+builder.Services.AddSingleton<UsersRepository>();
+builder.Services.AddSingleton<UnitOfWork>();
 builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
-
-
-
-
 
 
 builder.Services.AddControllers();

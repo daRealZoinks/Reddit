@@ -1,7 +1,6 @@
-﻿namespace DataLayer.Entities
+﻿namespace DataLayer.Entities;
+
+public class BaseEntity
 {
-    public class BaseEntity
-    {
-        public Guid Id { get; set; }
-    }
+    public int Id { get; set; }
 }

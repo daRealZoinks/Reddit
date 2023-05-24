@@ -1,71 +1,53 @@
-﻿using DataLayer.Entities;
+﻿using DataLayer;
+using DataLayer.Entities;
 
-namespace Core.Services
+namespace Core.Services;
+
+public class UserCollectionService : IUserCollectionService
 {
-    public class UserCollectionService : IUserCollectionService
+    private readonly UnitOfWork _unitOfWork;
+
+    public UserCollectionService(UnitOfWork unitOfWork)
     {
-        static List<User> _users = new()
-        {
-            new User()
-            {
-                Id = Guid.NewGuid(),
-                Username = "test1",
-                Email = "celmaitare@yoohoo.com",
-                Password = "parolagrea",
-                AccountCreationDate = DateTime.Today,
-                Description = "1",
-            },
-            new User()
-            {
-                Id = Guid.NewGuid(),
-                Username = "test2",
-                Email = "celmaiputintare@googoo.com",
-                Password = "parolasimpla",
-                AccountCreationDate = DateTime.Today.AddDays(-1),
-                Description = "2",
-            },
-            new User()
-            {
-                Id = Guid.NewGuid(),
-                Username = "test3",
-                Email = "altreileamail@beeng.com",
-                Password = "parolasimaisimpla",
-                AccountCreationDate = DateTime.Today.AddDays(-2),
-                Description = "3",
-            },
-        };
+        _unitOfWork = unitOfWork;
+    }
 
-        public User? Get(Guid id)
-        {
-            return _users.FirstOrDefault(x => x.Id == id);
-        }
+    public void Add(User entity)
+    {
+        _unitOfWork.UsersRepository.Add(entity);
+        _unitOfWork.SaveChanges();
+    }
 
-        public List<User> GetAll()
-        {
-            return _users;
-        }
+    public List<User> GetAll()
+    {
+        var results = _unitOfWork.UsersRepository.GetAll();
+        return results;
+    }
 
-        public void Create(User model)
-        {
-            _users.Add(model);
-        }
+    public User? GetById(int id)
+    {
+        return _unitOfWork.UsersRepository.GetById(id);
+    }
 
-        public void Delete(Guid id)
-        {
-            _users.Remove(_users.FirstOrDefault(x => x.Id == id));
-        }
+    public void Update(User entity)
+    {
+        var user = _unitOfWork.UsersRepository.GetById(entity.Id) ?? throw new Exception("User not found");
 
-        public void Update(User model)
-        {
-            var user = _users.FirstOrDefault(x => x.Id == model.Id);
+        user.Username = entity.Username;
+        user.Email = entity.Email;
+        user.Password = entity.Password;
+        user.AccountCreationDate = entity.AccountCreationDate;
+        user.Description = entity.Description;
 
-            if (user != null)
-            {
-                user.Username = model.Username;
-                user.Email = model.Email;
-                user.Password = model.Password;
-                user.Description = model.Description;
-            }
-        }
+        _unitOfWork.UsersRepository.Update(user);
+        _unitOfWork.SaveChanges();
+    }
+
+    public void Delete(int id)
+    {
+        var user = _unitOfWork.UsersRepository.GetById(id) ?? throw new Exception("User not found");
+
+        _unitOfWork.UsersRepository.Remove(user);
+        _unitOfWork.SaveChanges();
     }
 }

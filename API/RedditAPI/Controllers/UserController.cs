@@ -4,58 +4,58 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace RedditAPI.Controllers
+namespace RedditAPI.Controllers;
+
+[Route("api/[controller]/{id:int}")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private readonly IUserCollectionService _userCollectionService;
+
+    public UserController(IUserCollectionService userCollectionService)
     {
-        private readonly IUserCollectionService _userCollectionService;
+        _userCollectionService =
+            userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
+    }
 
-        public UserController(IUserCollectionService userCollectionService)
-        {
-            _userCollectionService = userCollectionService ?? throw new ArgumentNullException(nameof(UserCollectionService));
-        }
+    // GET: api/<UserController>
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok(_userCollectionService.GetAll());
+    }
 
-        // GET: api/<UserController>
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(_userCollectionService.GetAll());
-        }
+    // GET api/<UserController>/5
+    [HttpGet("")]
+    public IActionResult Get([FromRoute] int id)
+    {
+        return Ok(_userCollectionService.GetById(id));
+    }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
-        {
-            return Ok(_userCollectionService.Get(id));
-        }
+    // POST api/<UserController>
+    [HttpPost]
+    public IActionResult Post([FromBody] User user)
+    {
+        _userCollectionService.Add(user);
 
-        // POST api/<UserController>
-        [HttpPost]
-        public IActionResult Post([FromBody] User user)
-        {
-            _userCollectionService.Create(user);
+        return Ok();
+    }
 
-            return Ok();
-        }
+    // PUT api/<UserController>
+    [HttpPut]
+    public IActionResult Put([FromBody] User user)
+    {
+        _userCollectionService.Update(user);
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put([FromBody] User user)
-        {
-            _userCollectionService.Update(user);
+        return Ok();
+    }
 
-            return Ok();
-        }
+    // DELETE api/<UserController>/5
+    [HttpDelete("")]
+    public IActionResult Delete([FromRoute] int id)
+    {
+        _userCollectionService.Delete(id);
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
-            _userCollectionService.Delete(id);
-
-            return Ok();
-        }
+        return Ok();
     }
 }
