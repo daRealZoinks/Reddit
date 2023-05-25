@@ -1,13 +1,12 @@
-﻿namespace RedditClient.Models;
+﻿using System;
 
-public class User
+namespace RedditClient.Models;
+
+public class User : BaseEntity
 {
     public string Username { get; set; }
-
     public string Email { get; set; }
-
     public string Password { get; set; }
-
-    // public DateOnly AccountCreationDate { get; set; }
+    public DateTime AccountCreationDate { get; set; }
     public string Description { get; set; }
 }
