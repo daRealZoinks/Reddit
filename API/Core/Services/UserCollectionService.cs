@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using Core.Dtos;
+using DataLayer;
 using DataLayer.Entities;
 
 namespace Core.Services;
@@ -7,9 +8,12 @@ public class UserCollectionService : IUserCollectionService
 {
     private readonly UnitOfWork _unitOfWork;
 
-    public UserCollectionService(UnitOfWork unitOfWork)
+    private readonly AuthorizationService _authorizationService;
+
+    public UserCollectionService(UnitOfWork unitOfWork, AuthorizationService authorizationService)
     {
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public void Add(User entity)
@@ -35,7 +39,7 @@ public class UserCollectionService : IUserCollectionService
 
         user.Username = entity.Username;
         user.Email = entity.Email;
-        user.Password = entity.Password;
+        user.PasswordHash = entity.PasswordHash;
         user.AccountCreationDate = entity.AccountCreationDate;
         user.Description = entity.Description;
 
@@ -50,4 +54,51 @@ public class UserCollectionService : IUserCollectionService
         _unitOfWork.UsersRepository.Remove(user);
         _unitOfWork.SaveChanges();
     }
+
+    public RegisterDto? Register(RegisterDto payload)
+    {
+        if (payload == null)
+        {
+            return null;
+        }
+
+        var hashedPassword = _authorizationService.HashPassword(payload.Password);
+
+        if (hashedPassword == null)
+        {
+            return null;
+        }
+
+        User user = new()
+        {
+            Username = string.Empty,
+            Email = payload.Email,
+            PasswordHash = hashedPassword,
+            AccountCreationDate = DateTime.Now,
+            Description = string.Empty,
+            Role = payload.Role
+        };
+
+        Add(user);
+
+        return payload;
+    }
+
+    public string? Login(LoginDto payload)
+    {
+        var user = _unitOfWork.UsersRepository.GetByEmail(payload.Email);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        if (!_authorizationService.VerifyHashedPassword(user.PasswordHash, payload.Password))
+        {
+            return null;
+        }
+
+        return _authorizationService.GetToken(user);
+    }
+
 }
