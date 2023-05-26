@@ -1,0 +1,30 @@
+﻿<Window x:Class="RedditClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Email"/>
+                    <TextBox Name="EmailTextBox" Width="150"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Password"/>
+                    <PasswordBox Name="PasswordPasswordBox" Width="150"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Role"/>
+                    <CheckBox Name="AdminCheckBox" Content="Admin"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="LoginButton" Content="Login" Margin="10" Click="LoginButton_Click"/>
+                <Button x:Name="RegisterButton" Content="Register" Margin="10" Click="RegisterButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
