@@ -1,4 +1,4 @@
-﻿namespace RedditClient.Models
+﻿namespace RedditPublicAPI.Entities
 {
     public class BaseEntity
     {

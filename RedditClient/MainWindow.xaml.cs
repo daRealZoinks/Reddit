@@ -1,8 +1,8 @@
-﻿using RedditClient.Models;
+﻿using RedditPublicAPI;
+using RedditPublicAPI.Entities;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,82 +13,101 @@ namespace RedditClient;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private List<User> _users = new();
+    private readonly ObservableCollection<User> _users = new();
 
     public MainWindow()
     {
         InitializeComponent();
 
-        GetUsers();
-    }
-
-    private async void GetUsers()
-    {
-        using HttpClient httpClient = new();
-        var response = await httpClient.GetAsync("https://localhost:7214/api/User");
-
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        await response.Content.ReadFromJsonAsync<List<User>>().ContinueWith(task =>
-        {
-            _users = task.Result ?? throw new Exception();
-        });
-
         UsersListView.ItemsSource = _users;
     }
 
-    private async void Create_Click(object sender, RoutedEventArgs e)
+    private async void Get_Click(object sender, RoutedEventArgs e)
     {
-        User user = new()
+        try
         {
-            Username = UsernameTextBox.Text,
-            Email = EmailTextBox.Text,
-            Password = PasswordTextBox.Text,
-            AccountCreationDate = (DateTime)AccountCreationDateCalendar.SelectedDate,
-            Description = DescriptionTextBox.Text
-        };
+            List<User>? users = await Users.GetUsers();
 
-        using HttpClient httpClient = new();
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7214/api/User", user);
+            _users.Clear();
 
-        GetUsers();
+            if (users is not null)
+            {
+                foreach (var user in users)
+                {
+                    _users.Add(user);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
 
-    private async void Delete_Click(object sender, RoutedEventArgs e)
+    private void Create_Click(object sender, RoutedEventArgs e)
     {
-        if (UsersListView.SelectedValue is not User user)
+        try
         {
-            return;
+            User user = new()
+            {
+                Username = UsernameTextBox.Text,
+                Email = EmailTextBox.Text,
+                Password = PasswordTextBox.Text,
+                AccountCreationDate = AccountCreationDateCalendar.DisplayDate,
+                Role = RedditPublicAPI.Enums.Role.User,
+                Description = DescriptionTextBox.Text
+            };
+
+            Users.AddUser(user);
+
+            _users.Add(user);
         }
-
-        using HttpClient httpClient = new();
-        var response = await httpClient.DeleteAsync($"https://localhost:7214/api/User/{user.Id}");
-
-        GetUsers();
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
 
-    private async void Update_Click(object sender, RoutedEventArgs e)
+    private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        if ((UsersListView.SelectedValue as User) == null)
+        try
         {
-            return;
+            if (UsersListView.SelectedValue is not User user)
+            {
+                return;
+            }
+
+            Users.DeleteUser(user);
+
+            _users.Remove(user);
         }
-
-        User user = new()
+        catch (Exception ex)
         {
-            Id = (UsersListView.SelectedValue as User).Id,
-            Username = UsernameTextBox.Text,
-            Email = EmailTextBox.Text,
-            Password = PasswordTextBox.Text,
-            AccountCreationDate = (DateTime)AccountCreationDateCalendar.SelectedDate,
-            Description = DescriptionTextBox.Text
-        };
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-        using HttpClient httpClient = new();
-        var response = await httpClient.PutAsJsonAsync("https://localhost:7214/api/User", user);
+    private void Update_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (UsersListView.SelectedValue is not User user)
+            {
+                return;
+            }
 
-        GetUsers();
+            user.Username = UsernameTextBox.Text;
+            user.Email = EmailTextBox.Text;
+            user.Password = PasswordTextBox.Text;
+            user.AccountCreationDate = AccountCreationDateCalendar.DisplayDate;
+            user.Description = DescriptionTextBox.Text;
+
+            Users.UpdateUser(user);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
 
     private void UsersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using RedditPublicAPI.Enums;
+using System;
 
-namespace RedditClient.Models;
+namespace RedditPublicAPI.Entities;
 
 public class User : BaseEntity
 {
@@ -9,4 +10,5 @@ public class User : BaseEntity
     public string Password { get; set; }
     public DateTime AccountCreationDate { get; set; }
     public string Description { get; set; }
+    public Role Role { get; set; }
 }

@@ -13,14 +13,16 @@
                     <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}"/>
                     <GridViewColumn Header="Password" DisplayMemberBinding="{Binding Password}"/>
                     <GridViewColumn Header="AccountCreationDate" DisplayMemberBinding="{Binding AccountCreationDate}"/>
+                    <GridViewColumn Header="Role" DisplayMemberBinding="{Binding Role}"/>
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Button Name ="Create" Content="Create" HorizontalAlignment="Left" Margin="495,340,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Create_Click"/>
-        <Button Name ="Delete" Content="Delete" HorizontalAlignment="Left" Margin="495,401,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Delete_Click"/>
-        <Button Name ="Update" Content="Update" HorizontalAlignment="Left" Margin="495,466,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Update_Click"/>
+        <Button Name ="Get" Content="Get" HorizontalAlignment="Left" Margin="534,360,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Get_Click"/>
+        <Button Name ="Create" Content="Create" HorizontalAlignment="Left" Margin="534,406,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Create_Click"/>
+        <Button Name ="Delete" Content="Delete" HorizontalAlignment="Left" Margin="534,452,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Delete_Click"/>
+        <Button Name ="Update" Content="Update" HorizontalAlignment="Left" Margin="534,498,0,0" VerticalAlignment="Top" Height="41" Width="116" Click="Update_Click"/>
 
 
         <StackPanel Margin="42,337,434,173">
