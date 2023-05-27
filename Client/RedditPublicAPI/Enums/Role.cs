@@ -1,8 +1,7 @@
-﻿namespace RedditPublicAPI.Enums
+﻿namespace RedditPublicAPI.Enums;
+
+public enum Role
 {
-    public enum Role
-    {
-        User,
-        Administrator
-    }
+    User,
+    Administrator
 }

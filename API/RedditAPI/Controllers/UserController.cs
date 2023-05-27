@@ -1,6 +1,5 @@
 ﻿using Core.Dtos;
 using Core.Services;
-using DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +14,10 @@ public class UserController : ControllerBase
 {
     private readonly IUserCollectionService _userCollectionService;
 
-    public UserController(IUserCollectionService userCollectionService)
+    public UserController(IUserCollectionService userCollectionService,
+        IMessageCollectionService messageCollectionService)
     {
+        _ = messageCollectionService.GetAll(); // very temporary, find other way to initialize the message database indirectly
         _userCollectionService =
             userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
     }
@@ -26,7 +27,11 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
-        return Ok(_userCollectionService.GetAll());
+        var result = _userCollectionService.GetUserDtos();
+
+        if (result == null) return NotFound();
+
+        return Ok(result);
     }
 
     // GET api/<UserController>/5
@@ -34,15 +39,19 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
-        return Ok(_userCollectionService.GetById(id));
+        var result = _userCollectionService.GetUserDtoById(id);
+
+        if (result == null) return NotFound();
+
+        return Ok(result);
     }
 
     // POST api/<UserController>
     [HttpPost]
     [Authorize(Roles = "Administrator")]
-    public IActionResult Post([FromBody] User user)
+    public IActionResult Post([FromBody] UserPayloadDto payload)
     {
-        _userCollectionService.Add(user);
+        _userCollectionService.AddUserDto(payload);
 
         return Ok();
     }
@@ -50,9 +59,9 @@ public class UserController : ControllerBase
     // PUT api/<UserController>
     [HttpPut]
     [Authorize(Roles = "Administrator")]
-    public IActionResult Put([FromBody] User user)
+    public IActionResult Put([FromBody] UserPayloadDto payload)
     {
-        _userCollectionService.Update(user);
+        _userCollectionService.UpdateUserDto(payload);
 
         return Ok();
     }
@@ -74,10 +83,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.Register(payload);
 
-        if (result == null)
-        {
-            return BadRequest("User cannot be registered");
-        }
+        if (result == null) return BadRequest("User cannot be registered");
 
         return Ok(result);
     }
@@ -89,10 +95,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.Login(payload);
 
-        if (result == null)
-        {
-            return BadRequest("Invalid credentials");
-        }
+        if (result == null) return NotFound("Invalid credentials");
 
         return Ok(result);
     }

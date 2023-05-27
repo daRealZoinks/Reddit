@@ -6,13 +6,17 @@ public class UnitOfWork
 {
     private readonly AppDbContext _appDbContext;
 
-    public UnitOfWork(AppDbContext appDbContext, UsersRepository usersRepository)
+    public UnitOfWork(AppDbContext appDbContext,
+        UsersRepository usersRepository,
+        MessagesRepository messagesRepository)
     {
         _appDbContext = appDbContext;
         UsersRepository = usersRepository;
+        MessagesRepository = messagesRepository;
     }
 
     public UsersRepository UsersRepository { get; }
+    public MessagesRepository MessagesRepository { get; }
 
     public void SaveChanges()
     {

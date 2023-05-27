@@ -1,4 +1,5 @@
-﻿using RedditPublicAPI;
+﻿using RedditClient.Windows;
+using RedditPublicAPI;
 using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Enums;
 using System;
@@ -16,32 +17,30 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private async void Login(LoginDto loginDto)
+    private static async void Login(string email, string password)
+    {
+        LoginDto loginDto = new()
+        {
+            Email = email,
+            Password = password
+        };
+
+        App.Token = await Users.Login(loginDto);
+
+        Menu menu = new();
+        menu.Show();
+    }
+
+    private void LoginButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            var token = await Users.Login(loginDto);
-
-            MessageBox.Show(token);
-
-            UserCrud userCrud = new(token);
-            userCrud.Show();
+            Login(EmailTextBox.Text, PasswordPasswordBox.Password);
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
-    }
-
-    private void LoginButton_Click(object sender, RoutedEventArgs e)
-    {
-        LoginDto loginDto = new()
-        {
-            Email = EmailTextBox.Text,
-            Password = PasswordPasswordBox.Password
-        };
-
-        Login(loginDto);
     }
 
     private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -57,13 +56,7 @@ public partial class MainWindow : Window
         {
             Users.Register(registerDto);
 
-            LoginDto loginDto = new()
-            {
-                Email = EmailTextBox.Text,
-                Password = PasswordPasswordBox.Password
-            };
-
-            Login(loginDto);
+            Login(EmailTextBox.Text, PasswordPasswordBox.Password);
         }
         catch (Exception ex)
         {
