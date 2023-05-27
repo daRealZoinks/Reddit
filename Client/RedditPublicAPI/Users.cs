@@ -1,5 +1,6 @@
 ﻿using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Entities;
+using RedditPublicAPI.Enums;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -15,15 +16,35 @@ namespace RedditPublicAPI
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await httpClient.GetAsync(URI);
-
             response.EnsureSuccessStatusCode();
 
-            List<User> users = new();
-
-            await response.Content.ReadFromJsonAsync<List<User>>().ContinueWith(task =>
+            var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ?? throw new Exception("Failed to retrieve user data.");
+            List<User> users = userDtos.Select(userDto => new User
             {
-                users = task.Result ?? throw new Exception();
-            });
+                Id = userDto.Id,
+                Username = userDto.Username,
+                Email = userDto.Email,
+                PasswordHash = userDto.PasswordHash,
+                AccountCreationDate = userDto.AccountCreationDate,
+                Description = userDto.Description,
+                Role = userDto.Role,
+                SentMessages = userDto.SentMessages.Select(messageDto => new Message
+                {
+                    Id = messageDto.Id,
+                    Content = messageDto.Content,
+                    DateSent = messageDto.DateSent,
+                    SenderId = messageDto.SenderId,
+                    ReceiverId = messageDto.ReceiverId
+                }).ToList(),
+                ReceivedMessages = userDto.ReceivedMessages.Select(messageDto => new Message
+                {
+                    Id = messageDto.Id,
+                    Content = messageDto.Content,
+                    DateSent = messageDto.DateSent,
+                    SenderId = messageDto.SenderId,
+                    ReceiverId = messageDto.ReceiverId
+                }).ToList()
+            }).ToList();
 
             return users;
         }
@@ -32,7 +53,18 @@ namespace RedditPublicAPI
         {
             using HttpClient httpClient = new();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await httpClient.PostAsJsonAsync(URI, user);
+
+            UserPayloadDto userPayloadDto = new()
+            {
+                Username = user.Username,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                AccountCreationDate = user.AccountCreationDate,
+                Description = user.Description,
+                Role = Role.User
+            };
+
+            var response = await httpClient.PostAsJsonAsync(URI, userPayloadDto);
 
             response.EnsureSuccessStatusCode();
         }
@@ -50,6 +82,18 @@ namespace RedditPublicAPI
         {
             using HttpClient httpClient = new();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            UserPayloadDto userPayloadDto = new()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                AccountCreationDate = user.AccountCreationDate,
+                Description = user.Description,
+                Role = Role.User
+            };
+
             var response = await httpClient.PutAsJsonAsync(URI, user);
 
             response.EnsureSuccessStatusCode();

@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RedditClient
+namespace RedditClient.Windows
 {
     /// <summary>
     /// Interaction logic for UserCrud.xaml
@@ -16,22 +16,17 @@ namespace RedditClient
     {
         private readonly ObservableCollection<User> _users = new();
 
-        private readonly string _token;
-
-        public UserCrud(string token)
+        public UserCrud()
         {
             InitializeComponent();
-
-            _token = token;
-
             UsersListView.ItemsSource = _users;
         }
 
-        private async void Get_Click(object sender, RoutedEventArgs e)
+        private async void GetButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                List<User>? users = await Users.GetUsers(_token);
+                List<User>? users = await Users.GetUsers(App.Token);
 
                 _users.Clear();
 
@@ -49,7 +44,7 @@ namespace RedditClient
             }
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -63,7 +58,7 @@ namespace RedditClient
                     Description = DescriptionTextBox.Text
                 };
 
-                Users.AddUser(user, _token);
+                Users.AddUser(user, App.Token);
 
                 _users.Add(user);
             }
@@ -73,7 +68,7 @@ namespace RedditClient
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -82,7 +77,7 @@ namespace RedditClient
                     return;
                 }
 
-                Users.DeleteUser(user, _token);
+                Users.DeleteUser(user, App.Token);
 
                 _users.Remove(user);
             }
@@ -92,7 +87,7 @@ namespace RedditClient
             }
         }
 
-        private void Update_Click(object sender, RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -107,7 +102,7 @@ namespace RedditClient
                 user.AccountCreationDate = AccountCreationDateCalendar.DisplayDate;
                 user.Description = DescriptionTextBox.Text;
 
-                Users.UpdateUser(user, _token);
+                Users.UpdateUser(user, App.Token);
             }
             catch (Exception ex)
             {

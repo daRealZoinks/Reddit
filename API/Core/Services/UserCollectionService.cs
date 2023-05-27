@@ -1,6 +1,8 @@
 ﻿using Core.Dtos;
 using DataLayer;
+using DataLayer.Dtos;
 using DataLayer.Entities;
+using DataLayer.Mappings;
 
 namespace Core.Services;
 
@@ -55,6 +57,47 @@ public class UserCollectionService : IUserCollectionService
         _unitOfWork.SaveChanges();
     }
 
+    public UserDto? GetUserDtoById(int id)
+    {
+        var userDto = GetById(id)?.ToUserDto();
+        return userDto;
+    }
+
+    public List<UserDto>? GetUserDtos()
+    {
+        var userDtos = GetAll().ToUserDtos();
+        return userDtos;
+    }
+
+    public void AddUserDto(UserPayloadDto payload)
+    {
+        User user = new()
+        {
+            Username = payload.Username,
+            Email = payload.Email,
+            PasswordHash = payload.PasswordHash,
+            AccountCreationDate = payload.AccountCreationDate,
+            Description = payload.Description,
+            Role = payload.Role
+        };
+
+        Add(user);
+    }
+
+    public void UpdateUserDto(UserPayloadDto payload)
+    {
+        var user = GetById(payload.Id) ?? throw new Exception("User not found");
+
+        user.Username = payload.Username;
+        user.Email = payload.Email;
+        user.PasswordHash = payload.PasswordHash;
+        user.AccountCreationDate = payload.AccountCreationDate;
+        user.Description = payload.Description;
+        user.Role = payload.Role;
+
+        Update(user);
+    }
+
     public RegisterDto? Register(RegisterDto payload)
     {
         if (payload == null)
@@ -100,5 +143,4 @@ public class UserCollectionService : IUserCollectionService
 
         return _authorizationService.GetToken(user);
     }
-
 }

@@ -10,9 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<AppDbContext>();
 builder.Services.AddSingleton<UsersRepository>();
+builder.Services.AddSingleton<MessagesRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 builder.Services.AddSingleton<AuthorizationService>();
 builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
+builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionService>();
 
 // Configure authentication
 builder.Services.AddAuthentication(options =>
