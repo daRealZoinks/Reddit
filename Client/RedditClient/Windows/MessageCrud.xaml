@@ -3,45 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RedditClient.Windows"
         mc:Ignorable="d"
         Title="MessageCrud" Height="450" Width="800">
     <Grid>
         <ListView Name="MessagesListView" Margin="0,0,0,262" SelectionChanged="MessagesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Content" DisplayMemberBinding="{Binding Content}"/>
-                    <GridViewColumn Header="DateSent" DisplayMemberBinding="{Binding DateSent}"/>
-                    <GridViewColumn Header="Sender" DisplayMemberBinding="{Binding SenderId}"/>
-                    <GridViewColumn Header="Receiver" DisplayMemberBinding="{Binding ReceiverId}"/>
+                    <GridViewColumn Header="Content" DisplayMemberBinding="{Binding Content}" />
+                    <GridViewColumn Header="DateSent" DisplayMemberBinding="{Binding DateSent}" />
+                    <GridViewColumn Header="Sender" DisplayMemberBinding="{Binding SenderId}" />
+                    <GridViewColumn Header="Receiver" DisplayMemberBinding="{Binding ReceiverId}" />
                 </GridView>
             </ListView.View>
         </ListView>
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,60,40">
-            <Button Name ="GetButton" Content="Get" Height="41" Width="116" Click="GetButton_Click"/>
-            <Button Name ="CreateButton" Content="Create" Height="41" Width="116" Click="CreateButton_Click"/>
-            <Button Name ="DeleteButton" Content="Delete" Height="41" Width="116" Click="DeleteButton_Click"/>
-            <Button Name ="UpdateButton" Content="Update" Height="41" Width="116" Click="UpdateButton_Click"/>
+            <Button Name="GetButton" Content="Get" Height="41" Width="116" Click="GetButton_Click" />
+            <Button Name="CreateButton" Content="Create" Height="41" Width="116" Click="CreateButton_Click" />
+            <Button Name="DeleteButton" Content="Delete" Height="41" Width="116" Click="DeleteButton_Click" />
+            <Button Name="UpdateButton" Content="Update" Height="41" Width="116" Click="UpdateButton_Click" />
         </StackPanel>
 
         <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <TextBlock Text="DateSent"/>
-            <Calendar Name="DateSentCalendar"/>
+            <TextBlock Text="DateSent" />
+            <Calendar Name="DateSentCalendar" />
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="31,0,0,60">
             <StackPanel>
-                <TextBlock Text="Content"/>
-                <TextBox Name="ContentTextBox" TextWrapping="Wrap" Width="174"/>
+                <TextBlock Text="Content" />
+                <TextBox Name="ContentTextBox" TextWrapping="Wrap" Width="174" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Sender"/>
-                <ComboBox Name="SenderComboBox" Width="174"/>
+                <TextBlock Text="Sender" />
+                <ComboBox Name="SenderComboBox" Width="174" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Receiver"/>
-                <ComboBox Name="ReceiverComboBox" Width="174"/>
+                <TextBlock Text="Receiver" />
+                <ComboBox Name="ReceiverComboBox" Width="174" />
             </StackPanel>
         </StackPanel>
     </Grid>

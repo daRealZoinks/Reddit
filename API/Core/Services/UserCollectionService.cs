@@ -8,9 +8,8 @@ namespace Core.Services;
 
 public class UserCollectionService : IUserCollectionService
 {
-    private readonly UnitOfWork _unitOfWork;
-
     private readonly AuthorizationService _authorizationService;
+    private readonly UnitOfWork _unitOfWork;
 
     public UserCollectionService(UnitOfWork unitOfWork, AuthorizationService authorizationService)
     {
@@ -100,17 +99,11 @@ public class UserCollectionService : IUserCollectionService
 
     public RegisterDto? Register(RegisterDto payload)
     {
-        if (payload == null)
-        {
-            return null;
-        }
+        if (payload == null) return null;
 
         var hashedPassword = _authorizationService.HashPassword(payload.Password);
 
-        if (hashedPassword == null)
-        {
-            return null;
-        }
+        if (hashedPassword == null) return null;
 
         User user = new()
         {
@@ -131,15 +124,9 @@ public class UserCollectionService : IUserCollectionService
     {
         var user = _unitOfWork.UsersRepository.GetByEmail(payload.Email);
 
-        if (user == null)
-        {
-            return null;
-        }
+        if (user == null) return null;
 
-        if (!_authorizationService.VerifyHashedPassword(user.PasswordHash, payload.Password))
-        {
-            return null;
-        }
+        if (!_authorizationService.VerifyHashedPassword(user.PasswordHash, payload.Password)) return null;
 
         return _authorizationService.GetToken(user);
     }

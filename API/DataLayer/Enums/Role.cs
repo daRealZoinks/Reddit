@@ -1,8 +1,7 @@
-﻿namespace DataLayer.Enums
+﻿namespace DataLayer.Enums;
+
+public enum Role
 {
-    public enum Role
-    {
-        User,
-        Administrator
-    }
+    User,
+    Administrator
 }

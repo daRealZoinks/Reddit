@@ -15,7 +15,8 @@ public class MessageController : ControllerBase
 
     public MessageController(IMessageCollectionService messageCollectionService)
     {
-        _messageCollectionService = messageCollectionService ?? throw new ArgumentNullException(nameof(messageCollectionService));
+        _messageCollectionService = messageCollectionService ??
+                                    throw new ArgumentNullException(nameof(messageCollectionService));
     }
 
     // GET: api/<MessageController>
@@ -25,10 +26,7 @@ public class MessageController : ControllerBase
     {
         var result = _messageCollectionService.GetMessageDtos();
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+        if (result == null) return NotFound();
 
         return Ok(result);
     }
@@ -40,10 +38,7 @@ public class MessageController : ControllerBase
     {
         var result = _messageCollectionService.GetMessageDtoById(id);
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+        if (result == null) return NotFound();
 
         return Ok(result);
     }

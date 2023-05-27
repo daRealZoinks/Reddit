@@ -29,10 +29,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.GetUserDtos();
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+        if (result == null) return NotFound();
 
         return Ok(result);
     }
@@ -44,10 +41,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.GetUserDtoById(id);
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+        if (result == null) return NotFound();
 
         return Ok(result);
     }
@@ -89,10 +83,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.Register(payload);
 
-        if (result == null)
-        {
-            return BadRequest("User cannot be registered");
-        }
+        if (result == null) return BadRequest("User cannot be registered");
 
         return Ok(result);
     }
@@ -104,10 +95,7 @@ public class UserController : ControllerBase
     {
         var result = _userCollectionService.Login(payload);
 
-        if (result == null)
-        {
-            return NotFound("Invalid credentials");
-        }
+        if (result == null) return NotFound("Invalid credentials");
 
         return Ok(result);
     }

@@ -48,7 +48,6 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-
         base.OnModelCreating(modelBuilder);
     }
 }

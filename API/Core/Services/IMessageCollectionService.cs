@@ -2,13 +2,12 @@
 using DataLayer.Dtos;
 using DataLayer.Entities;
 
-namespace Core.Services
+namespace Core.Services;
+
+public interface IMessageCollectionService : ICollectionService<Message>
 {
-    public interface IMessageCollectionService : ICollectionService<Message>
-    {
-        void AddMessageDto(PostMessageDto postMessageDto);
-        List<MessageDto>? GetMessageDtos();
-        MessageDto? GetMessageDtoById(int id);
-        void UpdateMessageDto(MessageDto messageDto);
-    }
+    void AddMessageDto(PostMessageDto postMessageDto);
+    List<MessageDto>? GetMessageDtos();
+    MessageDto? GetMessageDtoById(int id);
+    void UpdateMessageDto(MessageDto messageDto);
 }

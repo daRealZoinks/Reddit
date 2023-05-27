@@ -9,21 +9,21 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <StackPanel>
-                    <TextBlock Text="Email"/>
-                    <TextBox Name="EmailTextBox" Width="150"/>
+                    <TextBlock Text="Email" />
+                    <TextBox Name="EmailTextBox" Width="150" />
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="Password"/>
-                    <PasswordBox Name="PasswordPasswordBox" Width="150"/>
+                    <TextBlock Text="Password" />
+                    <PasswordBox Name="PasswordPasswordBox" Width="150" />
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="Role"/>
-                    <CheckBox Name="AdminCheckBox" Content="Admin"/>
+                    <TextBlock Text="Role" />
+                    <CheckBox Name="AdminCheckBox" Content="Admin" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="LoginButton" Content="Login" Margin="10" Click="LoginButton_Click"/>
-                <Button x:Name="RegisterButton" Content="Register" Margin="10" Click="RegisterButton_Click"/>
+                <Button x:Name="LoginButton" Content="Login" Margin="10" Click="LoginButton_Click" />
+                <Button x:Name="RegisterButton" Content="Register" Margin="10" Click="RegisterButton_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

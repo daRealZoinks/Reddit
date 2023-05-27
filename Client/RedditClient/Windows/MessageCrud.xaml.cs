@@ -1,130 +1,115 @@
 ﻿using RedditPublicAPI;
 using RedditPublicAPI.Entities;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RedditClient.Windows
+namespace RedditClient.Windows;
+
+/// <summary>
+///     Interaction logic for MessageCrud.xaml
+/// </summary>
+public partial class MessageCrud : Window
 {
-    /// <summary>
-    /// Interaction logic for MessageCrud.xaml
-    /// </summary>
-    public partial class MessageCrud : Window
+    private readonly ObservableCollection<Message> _messages = new();
+
+    public MessageCrud()
     {
-        private readonly ObservableCollection<Message> _messages = new();
+        InitializeComponent();
+        MessagesListView.ItemsSource = _messages;
 
-        public MessageCrud()
+        Initialize();
+    }
+
+    private async void Initialize()
+    {
+        SenderComboBox.ItemsSource = await Users.GetUsers(App.Token);
+        ReceiverComboBox.ItemsSource = await Users.GetUsers(App.Token);
+    }
+
+    private async void GetButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            InitializeComponent();
-            MessagesListView.ItemsSource = _messages;
+            var messages = await Messages.GetMessages(App.Token);
 
-            Initialize();
+            _messages.Clear();
+
+            if (messages is not null)
+                foreach (var message in messages)
+                    _messages.Add(message);
         }
-
-        private async void Initialize()
+        catch (Exception ex)
         {
-            SenderComboBox.ItemsSource = await Users.GetUsers(App.Token);
-            ReceiverComboBox.ItemsSource = await Users.GetUsers(App.Token);
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        private async void GetButton_Click(object sender, RoutedEventArgs e)
+    private void CreateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            try
+            Message message = new()
             {
-                List<Message>? messages = await Messages.GetMessages(App.Token);
+                Content = ContentTextBox.Text,
+                DateSent = DateSentCalendar.DisplayDate,
+                SenderId = ((User)SenderComboBox.SelectedItem).Id,
+                ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id
+            };
 
-                _messages.Clear();
+            Messages.AddMessage(message, App.Token);
 
-                if (messages is not null)
-                {
-                    foreach (var message in messages)
-                    {
-                        _messages.Add(message);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            _messages.Add(message);
         }
-
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        catch (Exception ex)
         {
-            try
-            {
-                Message message = new()
-                {
-                    Content = ContentTextBox.Text,
-                    DateSent = DateSentCalendar.DisplayDate,
-                    SenderId = ((User)SenderComboBox.SelectedItem).Id,
-                    ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id,
-                };
-
-                Messages.AddMessage(message, App.Token);
-
-                _messages.Add(message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+    private void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            try
-            {
-                if (MessagesListView.SelectedValue is not Message message)
-                {
-                    return;
-                }
+            if (MessagesListView.SelectedValue is not Message message) return;
 
-                Messages.DeleteMessage(message, App.Token);
+            Messages.DeleteMessage(message, App.Token);
 
-                _messages.Remove(message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            _messages.Remove(message);
         }
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        catch (Exception ex)
         {
-            try
-            {
-                if (MessagesListView.SelectedValue is not Message message)
-                {
-                    return;
-                }
-
-                message.Content = ContentTextBox.Text;
-                message.DateSent = DateSentCalendar.DisplayDate;
-                message.SenderId = ((User)SenderComboBox.SelectedItem).Id;
-                message.ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id;
-
-                Messages.UpdateMessage(message, App.Token);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        private void MessagesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void UpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            if (MessagesListView.SelectedValue is not Message message)
-            {
-                return;
-            }
+            if (MessagesListView.SelectedValue is not Message message) return;
 
-            ContentTextBox.Text = message.Content;
-            DateSentCalendar.DisplayDate = message.DateSent;
-            SenderComboBox.SelectedItem = message.Sender;
-            ReceiverComboBox.SelectedItem = message.Receiver;
+            message.Content = ContentTextBox.Text;
+            message.DateSent = DateSentCalendar.DisplayDate;
+            message.SenderId = ((User)SenderComboBox.SelectedItem).Id;
+            message.ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id;
+
+            Messages.UpdateMessage(message, App.Token);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private void MessagesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (MessagesListView.SelectedValue is not Message message) return;
+
+        ContentTextBox.Text = message.Content;
+        DateSentCalendar.DisplayDate = message.DateSent;
+        SenderComboBox.SelectedItem = message.Sender;
+        ReceiverComboBox.SelectedItem = message.Receiver;
     }
 }

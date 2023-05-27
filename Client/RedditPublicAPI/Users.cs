@@ -4,117 +4,117 @@ using RedditPublicAPI.Enums;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace RedditPublicAPI
+namespace RedditPublicAPI;
+
+public class Users
 {
-    public class Users
+    private const string URI = "https://localhost:7214/api/User";
+
+    public static async Task<List<User>> GetUsers(string token)
     {
-        private const string URI = "https://localhost:7214/api/User";
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        public async static Task<List<User>> GetUsers(string token)
+        var response = await httpClient.GetAsync(URI);
+        response.EnsureSuccessStatusCode();
+
+        var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ??
+                       throw new Exception("Failed to retrieve user data.");
+        var users = userDtos.Select(userDto => new User
         {
-            using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await httpClient.GetAsync(URI);
-            response.EnsureSuccessStatusCode();
-
-            var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ?? throw new Exception("Failed to retrieve user data.");
-            List<User> users = userDtos.Select(userDto => new User
+            Id = userDto.Id,
+            Username = userDto.Username,
+            Email = userDto.Email,
+            PasswordHash = userDto.PasswordHash,
+            AccountCreationDate = userDto.AccountCreationDate,
+            Description = userDto.Description,
+            Role = userDto.Role,
+            SentMessages = userDto.SentMessages.Select(messageDto => new Message
             {
-                Id = userDto.Id,
-                Username = userDto.Username,
-                Email = userDto.Email,
-                PasswordHash = userDto.PasswordHash,
-                AccountCreationDate = userDto.AccountCreationDate,
-                Description = userDto.Description,
-                Role = userDto.Role,
-                SentMessages = userDto.SentMessages.Select(messageDto => new Message
-                {
-                    Id = messageDto.Id,
-                    Content = messageDto.Content,
-                    DateSent = messageDto.DateSent,
-                    SenderId = messageDto.SenderId,
-                    ReceiverId = messageDto.ReceiverId
-                }).ToList(),
-                ReceivedMessages = userDto.ReceivedMessages.Select(messageDto => new Message
-                {
-                    Id = messageDto.Id,
-                    Content = messageDto.Content,
-                    DateSent = messageDto.DateSent,
-                    SenderId = messageDto.SenderId,
-                    ReceiverId = messageDto.ReceiverId
-                }).ToList()
-            }).ToList();
-
-            return users;
-        }
-
-        public async static void AddUser(User user, string token)
-        {
-            using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            UserPayloadDto userPayloadDto = new()
+                Id = messageDto.Id,
+                Content = messageDto.Content,
+                DateSent = messageDto.DateSent,
+                SenderId = messageDto.SenderId,
+                ReceiverId = messageDto.ReceiverId
+            }).ToList(),
+            ReceivedMessages = userDto.ReceivedMessages.Select(messageDto => new Message
             {
-                Username = user.Username,
-                Email = user.Email,
-                PasswordHash = user.PasswordHash,
-                AccountCreationDate = user.AccountCreationDate,
-                Description = user.Description,
-                Role = Role.User
-            };
+                Id = messageDto.Id,
+                Content = messageDto.Content,
+                DateSent = messageDto.DateSent,
+                SenderId = messageDto.SenderId,
+                ReceiverId = messageDto.ReceiverId
+            }).ToList()
+        }).ToList();
 
-            var response = await httpClient.PostAsJsonAsync(URI, userPayloadDto);
+        return users;
+    }
 
-            response.EnsureSuccessStatusCode();
-        }
+    public static async void AddUser(User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        public async static void DeleteUser(User user, string token)
+        UserPayloadDto userPayloadDto = new()
         {
-            using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await httpClient.DeleteAsync($"{URI}/{user.Id}");
+            Username = user.Username,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            AccountCreationDate = user.AccountCreationDate,
+            Description = user.Description,
+            Role = Role.User
+        };
 
-            response.EnsureSuccessStatusCode();
-        }
+        var response = await httpClient.PostAsJsonAsync(URI, userPayloadDto);
 
-        public async static void UpdateUser(User user, string token)
+        response.EnsureSuccessStatusCode();
+    }
+
+    public static async void DeleteUser(User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await httpClient.DeleteAsync($"{URI}/{user.Id}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public static async void UpdateUser(User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        UserPayloadDto userPayloadDto = new()
         {
-            using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            AccountCreationDate = user.AccountCreationDate,
+            Description = user.Description,
+            Role = Role.User
+        };
 
-            UserPayloadDto userPayloadDto = new()
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                PasswordHash = user.PasswordHash,
-                AccountCreationDate = user.AccountCreationDate,
-                Description = user.Description,
-                Role = Role.User
-            };
+        var response = await httpClient.PutAsJsonAsync(URI, user);
 
-            var response = await httpClient.PutAsJsonAsync(URI, user);
+        response.EnsureSuccessStatusCode();
+    }
 
-            response.EnsureSuccessStatusCode();
-        }
+    public static async void Register(RegisterDto registerDto)
+    {
+        using HttpClient httpClient = new();
+        var response = await httpClient.PostAsJsonAsync($"{URI}/register", registerDto);
 
-        public async static void Register(RegisterDto registerDto)
-        {
-            using HttpClient httpClient = new();
-            var response = await httpClient.PostAsJsonAsync($"{URI}/register", registerDto);
+        response.EnsureSuccessStatusCode();
+    }
 
-            response.EnsureSuccessStatusCode();
-        }
+    public static async Task<string> Login(LoginDto loginDto)
+    {
+        using HttpClient httpClient = new();
+        var response = await httpClient.PostAsJsonAsync($"{URI}/login", loginDto);
 
-        public async static Task<string> Login(LoginDto loginDto)
-        {
-            using HttpClient httpClient = new();
-            var response = await httpClient.PostAsJsonAsync($"{URI}/login", loginDto);
+        response.EnsureSuccessStatusCode();
 
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
-        }
+        return await response.Content.ReadAsStringAsync();
     }
 }
