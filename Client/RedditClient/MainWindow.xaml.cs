@@ -3,6 +3,7 @@ using RedditPublicAPI;
 using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Enums;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace RedditClient;
@@ -17,7 +18,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private static async void Login(string email, string password)
+    private static async Task<string> Login(string email, string password)
     {
         LoginDto loginDto = new()
         {
@@ -25,17 +26,26 @@ public partial class MainWindow : Window
             Password = password
         };
 
-        App.Token = await Users.Login(loginDto);
+        try
+        {
+            App.Token = await Users.Login(loginDto);
 
-        Menu menu = new();
-        menu.Show();
+            Menu menu = new();
+            menu.Show();
+
+            return "Login successful.";
+        }
+        catch (Exception ex)
+        {
+            return "Login failed:" + ex.Message;
+        }
     }
 
-    private void LoginButton_Click(object sender, RoutedEventArgs e)
+    private async void LoginButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            Login(EmailTextBox.Text, PasswordPasswordBox.Password);
+            await Login(EmailTextBox.Text, PasswordPasswordBox.Password);
         }
         catch (Exception ex)
         {
@@ -43,7 +53,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RegisterButton_Click(object sender, RoutedEventArgs e)
+    private async void RegisterButton_Click(object sender, RoutedEventArgs e)
     {
         RegisterDto registerDto = new()
         {
@@ -56,7 +66,7 @@ public partial class MainWindow : Window
         {
             Users.Register(registerDto);
 
-            Login(EmailTextBox.Text, PasswordPasswordBox.Password);
+            await Login(EmailTextBox.Text, PasswordPasswordBox.Password);
         }
         catch (Exception ex)
         {

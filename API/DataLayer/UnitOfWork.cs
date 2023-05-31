@@ -8,15 +8,18 @@ public class UnitOfWork
 
     public UnitOfWork(AppDbContext appDbContext,
         UsersRepository usersRepository,
-        MessagesRepository messagesRepository)
+        MessagesRepository messagesRepository,
+        AchievementRepository achievementRepository)
     {
         _appDbContext = appDbContext;
         UsersRepository = usersRepository;
         MessagesRepository = messagesRepository;
+        AchievementRepository = achievementRepository;
     }
 
     public UsersRepository UsersRepository { get; }
     public MessagesRepository MessagesRepository { get; }
+    public AchievementRepository AchievementRepository { get; }
 
     public void SaveChanges()
     {

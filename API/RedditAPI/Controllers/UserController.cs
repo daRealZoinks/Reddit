@@ -17,7 +17,6 @@ public class UserController : ControllerBase
     public UserController(IUserCollectionService userCollectionService,
         IMessageCollectionService messageCollectionService)
     {
-        _ = messageCollectionService.GetAll(); // very temporary, find other way to initialize the message database indirectly
         _userCollectionService =
             userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
     }

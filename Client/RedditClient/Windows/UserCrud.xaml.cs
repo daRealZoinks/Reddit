@@ -39,7 +39,7 @@ public partial class UserCrud : Window
         }
     }
 
-    private void CreateButton_Click(object sender, RoutedEventArgs e)
+    private async void CreateButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -53,7 +53,7 @@ public partial class UserCrud : Window
                 Description = DescriptionTextBox.Text
             };
 
-            Users.AddUser(user, App.Token);
+            await Users.AddUser(user, App.Token);
 
             _users.Add(user);
         }
@@ -63,13 +63,13 @@ public partial class UserCrud : Window
         }
     }
 
-    private void DeleteButton_Click(object sender, RoutedEventArgs e)
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
             if (UsersListView.SelectedValue is not User user) return;
 
-            Users.DeleteUser(user, App.Token);
+            await Users.DeleteUser(user, App.Token);
 
             _users.Remove(user);
         }
@@ -79,7 +79,7 @@ public partial class UserCrud : Window
         }
     }
 
-    private void UpdateButton_Click(object sender, RoutedEventArgs e)
+    private async void UpdateButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -91,7 +91,7 @@ public partial class UserCrud : Window
             user.AccountCreationDate = AccountCreationDateCalendar.DisplayDate;
             user.Description = DescriptionTextBox.Text;
 
-            Users.UpdateUser(user, App.Token);
+            await Users.UpdateUser(user, App.Token);
         }
         catch (Exception ex)
         {

@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     // this is where tables are defined
     public DbSet<User> Users { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<Achievement> Achievements { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
