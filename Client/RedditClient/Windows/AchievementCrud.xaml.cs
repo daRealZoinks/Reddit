@@ -5,102 +5,101 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RedditClient.Windows
+namespace RedditClient.Windows;
+
+/// <summary>
+///     Interaction logic for AchievementCrud.xaml
+/// </summary>
+public partial class AchievementCrud : Window
 {
-    /// <summary>
-    /// Interaction logic for AchievementCrud.xaml
-    /// </summary>
-    public partial class AchievementCrud : Window
+    private readonly ObservableCollection<Achievement> _achievements = new();
+
+
+    public AchievementCrud()
     {
-        private readonly ObservableCollection<Achievement> _achievements = new();
+        InitializeComponent();
+        AchievementListView.ItemsSource = _achievements;
+    }
 
-
-        public AchievementCrud()
+    private async void GetButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            InitializeComponent();
-            AchievementListView.ItemsSource = _achievements;
-        }
+            var achievements = await Achievements.GetAchievements(App.Token);
 
-        private async void GetButton_Click(object sender, RoutedEventArgs e)
+            _achievements.Clear();
+
+            if (achievements is not null)
+                foreach (var achievement in achievements)
+                    _achievements.Add(achievement);
+        }
+        catch (Exception ex)
         {
-            try
-            {
-                var achievements = await Achievements.GetAchievements(App.Token);
-
-                _achievements.Clear();
-
-                if (achievements is not null)
-                    foreach (var achievement in achievements)
-                        _achievements.Add(achievement);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        private async void CreateButton_Click(object sender, RoutedEventArgs e)
+    private async void CreateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            try
+            Achievement achievement = new()
             {
-                Achievement achievement = new()
-                {
-                    Name = NameTextBox.Text,
-                    Description = DescriptionTextBox.Text,
-                    Value = int.Parse(ValueTextBox.Text)
-                };
+                Name = NameTextBox.Text,
+                Description = DescriptionTextBox.Text,
+                Value = int.Parse(ValueTextBox.Text)
+            };
 
-                await Achievements.AddAchievement(achievement, App.Token);
+            await Achievements.AddAchievement(achievement, App.Token);
 
-                _achievements.Add(achievement);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            _achievements.Add(achievement);
         }
-
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        catch (Exception ex)
         {
-            try
-            {
-                if (AchievementListView.SelectedValue is not Achievement achievement) return;
-
-                await Achievements.DeleteAchievement(achievement, App.Token);
-
-                _achievements.Remove(achievement);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (AchievementListView.SelectedValue is not Achievement achievement) return;
-
-                achievement.Name = NameTextBox.Text;
-                achievement.Description = DescriptionTextBox.Text;
-                achievement.Value = int.Parse(ValueTextBox.Text);
-
-                await Achievements.UpdateAchievement(achievement, App.Token);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void AchievementListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
             if (AchievementListView.SelectedValue is not Achievement achievement) return;
 
-            NameTextBox.Text = achievement.Name;
-            DescriptionTextBox.Text = achievement.Description;
-            ValueTextBox.Text = achievement.Value.ToString();
+            await Achievements.DeleteAchievement(achievement, App.Token);
+
+            _achievements.Remove(achievement);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private async void UpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (AchievementListView.SelectedValue is not Achievement achievement) return;
+
+            achievement.Name = NameTextBox.Text;
+            achievement.Description = DescriptionTextBox.Text;
+            achievement.Value = int.Parse(ValueTextBox.Text);
+
+            await Achievements.UpdateAchievement(achievement, App.Token);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private void AchievementListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (AchievementListView.SelectedValue is not Achievement achievement) return;
+
+        NameTextBox.Text = achievement.Name;
+        DescriptionTextBox.Text = achievement.Description;
+        ValueTextBox.Text = achievement.Value.ToString();
     }
 }

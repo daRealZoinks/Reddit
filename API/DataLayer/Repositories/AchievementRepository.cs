@@ -1,11 +1,10 @@
 ﻿using DataLayer.Entities;
 
-namespace DataLayer.Repositories
+namespace DataLayer.Repositories;
+
+public class AchievementRepository : RepositoryBase<Achievement>
 {
-    public class AchievementRepository : RepositoryBase<Achievement>
+    public AchievementRepository(AppDbContext appDbContext) : base(appDbContext)
     {
-        public AchievementRepository(AppDbContext appDbContext) : base(appDbContext)
-        {
-        }
     }
 }

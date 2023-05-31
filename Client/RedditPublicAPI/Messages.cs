@@ -20,10 +20,7 @@ public class Messages
             response.EnsureSuccessStatusCode();
 
             var messageDtos = await response.Content.ReadFromJsonAsync<List<MessageDto>>();
-            if (messageDtos == null || messageDtos.Count == 0)
-            {
-                throw new Exception("No messages found.");
-            }
+            if (messageDtos == null || messageDtos.Count == 0) throw new Exception("No messages found.");
 
             return messageDtos.Select(messageDto => new Message
             {
@@ -33,7 +30,6 @@ public class Messages
                 SenderId = messageDto.SenderId,
                 ReceiverId = messageDto.ReceiverId
             }).ToList();
-
         }
         catch (HttpRequestException ex)
         {

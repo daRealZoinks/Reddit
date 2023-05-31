@@ -9,7 +9,8 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Name="UsersButton" Content="Users" Height="41" Width="116" Click="UsersButton_Click" />
             <Button Name="MessagesButton" Content="Messages" Height="41" Width="116" Click="MessagesButton_Click" />
-            <Button Name="AchievementsButton" Content="Achievements" Height="41" Width="116" Click="AchievementsButton_Click" />
+            <Button Name="AchievementsButton" Content="Achievements" Height="41" Width="116"
+                    Click="AchievementsButton_Click" />
         </StackPanel>
     </Grid>
 </Window>

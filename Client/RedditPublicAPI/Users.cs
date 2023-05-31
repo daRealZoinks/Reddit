@@ -20,7 +20,8 @@ public class Users
             var response = await httpClient.GetAsync(URI);
             response.EnsureSuccessStatusCode();
 
-            var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ?? throw new Exception("Failed to retrieve user data.");
+            var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ??
+                           throw new Exception("Failed to retrieve user data.");
             var users = userDtos.Select(userDto => new User
             {
                 Id = userDto.Id,

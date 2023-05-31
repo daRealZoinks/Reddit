@@ -1,9 +1,8 @@
-﻿namespace RedditPublicAPI.Entities
+﻿namespace RedditPublicAPI.Entities;
+
+public class Achievement : BaseEntity
 {
-    public class Achievement : BaseEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Value { get; set; }
-    }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public int Value { get; set; }
 }
