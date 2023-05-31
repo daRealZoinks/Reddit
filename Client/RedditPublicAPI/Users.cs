@@ -8,49 +8,40 @@ namespace RedditPublicAPI;
 
 public class Users
 {
-    private const string URI = "https://localhost:7214/api/User";
+    private const string URI = "https://localhost:5001/api/User";
 
     public static async Task<List<User>> GetUsers(string token)
     {
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await httpClient.GetAsync(URI);
-        response.EnsureSuccessStatusCode();
-
-        var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ??
-                       throw new Exception("Failed to retrieve user data.");
-        var users = userDtos.Select(userDto => new User
+        try
         {
-            Id = userDto.Id,
-            Username = userDto.Username,
-            Email = userDto.Email,
-            PasswordHash = userDto.PasswordHash,
-            AccountCreationDate = userDto.AccountCreationDate,
-            Description = userDto.Description,
-            Role = userDto.Role,
-            SentMessages = userDto.SentMessages.Select(messageDto => new Message
-            {
-                Id = messageDto.Id,
-                Content = messageDto.Content,
-                DateSent = messageDto.DateSent,
-                SenderId = messageDto.SenderId,
-                ReceiverId = messageDto.ReceiverId
-            }).ToList(),
-            ReceivedMessages = userDto.ReceivedMessages.Select(messageDto => new Message
-            {
-                Id = messageDto.Id,
-                Content = messageDto.Content,
-                DateSent = messageDto.DateSent,
-                SenderId = messageDto.SenderId,
-                ReceiverId = messageDto.ReceiverId
-            }).ToList()
-        }).ToList();
+            var response = await httpClient.GetAsync(URI);
+            response.EnsureSuccessStatusCode();
 
-        return users;
+            var userDtos = await response.Content.ReadFromJsonAsync<List<UserDto>>() ??
+                           throw new Exception("Failed to retrieve user data.");
+            var users = userDtos.Select(userDto => new User
+            {
+                Id = userDto.Id,
+                Username = userDto.Username,
+                Email = userDto.Email,
+                PasswordHash = userDto.PasswordHash,
+                AccountCreationDate = userDto.AccountCreationDate,
+                Description = userDto.Description,
+                Role = userDto.Role
+            }).ToList();
+
+            return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to retrieve user data from {URI}. {ex.Message}", ex);
+        }
     }
 
-    public static async void AddUser(User user, string token)
+    public static async Task AddUser(User user, string token)
     {
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -65,56 +56,108 @@ public class Users
             Role = Role.User
         };
 
-        var response = await httpClient.PostAsJsonAsync(URI, userPayloadDto);
-
-        response.EnsureSuccessStatusCode();
-    }
-
-    public static async void DeleteUser(User user, string token)
-    {
-        using HttpClient httpClient = new();
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await httpClient.DeleteAsync($"{URI}/{user.Id}");
-
-        response.EnsureSuccessStatusCode();
-    }
-
-    public static async void UpdateUser(User user, string token)
-    {
-        using HttpClient httpClient = new();
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        UserPayloadDto userPayloadDto = new()
+        try
         {
-            Id = user.Id,
-            Username = user.Username,
-            Email = user.Email,
-            PasswordHash = user.PasswordHash,
-            AccountCreationDate = user.AccountCreationDate,
-            Description = user.Description,
-            Role = Role.User
-        };
+            var response = await httpClient.PostAsJsonAsync(URI, userPayloadDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to add user. {ex.Message}", ex);
+        }
+    }
 
-        var response = await httpClient.PutAsJsonAsync(URI, user);
+    public static async Task<bool> DeleteUser(User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.DeleteAsync($"{URI}/{user.Id}");
+            response.EnsureSuccessStatusCode();
+
+            return true;
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+        {
+            throw new InvalidOperationException($"User with id {user.Id} not found", ex);
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("401"))
+        {
+            throw new UnauthorizedAccessException($"Unauthorized operation on user with id {user.Id}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to delete user with Id: {user.Id}. {ex.Message}", ex);
+        }
+    }
+
+    public static async Task UpdateUser(User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            UserPayloadDto userPayloadDto = new()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                AccountCreationDate = user.AccountCreationDate,
+                Description = user.Description,
+                Role = Role.User
+            };
+
+            var response = await httpClient.PutAsJsonAsync($"{URI}/{user.Id}", userPayloadDto);
+
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to update user data. {ex.Message}", ex);
+        }
     }
 
     public static async void Register(RegisterDto registerDto)
     {
         using HttpClient httpClient = new();
-        var response = await httpClient.PostAsJsonAsync($"{URI}/register", registerDto);
 
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/register", registerDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to register user. {ex.Message}", ex);
+        }
     }
 
     public static async Task<string> Login(LoginDto loginDto)
     {
         using HttpClient httpClient = new();
-        var response = await httpClient.PostAsJsonAsync($"{URI}/login", loginDto);
 
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/login", loginDto);
+            response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+        {
+            throw new InvalidOperationException("User not found.", ex);
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("401"))
+        {
+            throw new UnauthorizedAccessException("Invalid credentials.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to log in. {ex.Message}", ex);
+        }
     }
 }

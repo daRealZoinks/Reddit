@@ -46,7 +46,7 @@ public partial class MessageCrud : Window
         }
     }
 
-    private void CreateButton_Click(object sender, RoutedEventArgs e)
+    private async void CreateButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -58,7 +58,7 @@ public partial class MessageCrud : Window
                 ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id
             };
 
-            Messages.AddMessage(message, App.Token);
+            await Messages.AddMessage(message, App.Token);
 
             _messages.Add(message);
         }

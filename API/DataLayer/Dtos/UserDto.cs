@@ -14,4 +14,5 @@ public class UserDto
 
     public List<MessageDto> SentMessages { get; set; } = new();
     public List<MessageDto> ReceivedMessages { get; set; } = new();
+    public List<AchievementDto> Achievements { get; set; } = new();
 }

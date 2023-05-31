@@ -23,4 +23,10 @@ public partial class Menu : Window
         MessageCrud messageCrud = new();
         messageCrud.Show();
     }
+
+    private void AchievementsButton_Click(object sender, RoutedEventArgs e)
+    {
+        AchievementCrud achievementCrud = new();
+        achievementCrud.Show();
+    }
 }

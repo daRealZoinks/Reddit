@@ -11,10 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<AppDbContext>();
 builder.Services.AddSingleton<UsersRepository>();
 builder.Services.AddSingleton<MessagesRepository>();
+builder.Services.AddSingleton<AchievementRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 builder.Services.AddSingleton<AuthorizationService>();
 builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
 builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionService>();
+builder.Services.AddSingleton<IAchievementCollectionService, AchievementCollectionService>();
 
 // Configure authentication
 builder.Services.AddAuthentication(options =>
