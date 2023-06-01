@@ -17,7 +17,7 @@ public static class Communities {
 			response.EnsureSuccessStatusCode();
 
 			var communityDtos = await response.Content.ReadFromJsonAsync<List<CommunityDto>>() ??
-								  throw new Exception("Failed to retrieve achievement data.");
+								  throw new Exception("Failed to retrieve community data.");
 
 			var communities = communityDtos.Select(communityDto => new Community {
 				Id = communityDto.Id,
@@ -29,7 +29,7 @@ public static class Communities {
 			return communities;
 		}
 		catch(Exception ex) {
-			throw new Exception($"Failed to retrieve achievement data from {URI}. {ex.Message}", ex);
+			throw new Exception($"Failed to retrieve community data from {URI}. {ex.Message}", ex);
 		}
 	}
 
@@ -48,7 +48,7 @@ public static class Communities {
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {
-			throw new Exception($"Failed to add achievement data to {URI}. {ex.Message}", ex);
+			throw new Exception($"Failed to add community data to {URI}. {ex.Message}", ex);
 		}
 	}
 
@@ -61,7 +61,7 @@ public static class Communities {
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {
-			throw new Exception($"Failed to delete achievement data from {URI}. {ex.Message}", ex);
+			throw new Exception($"Failed to delete community data from {URI}. {ex.Message}", ex);
 		}
 	}
 
@@ -81,7 +81,7 @@ public static class Communities {
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {
-			throw new Exception($"Failed to update achievement data in {URI}. {ex.Message}", ex);
+			throw new Exception($"Failed to update community data in {URI}. {ex.Message}", ex);
 		}
 	}
 }
