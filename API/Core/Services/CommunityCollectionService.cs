@@ -23,6 +23,7 @@ public class CommunityCollectionService : ICommunityCollectionService {
 
 	public void Add(Community entity) {
 		_unitOfWork.CommunityRepository.Add(entity);
+
 		_unitOfWork.SaveChanges();
 	}
 
@@ -30,18 +31,19 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
 
 		_unitOfWork.CommunityRepository.Remove(community);
+
 		_unitOfWork.SaveChanges();
 	}
 
 	public void Update(Community entity) {
 		var community = _unitOfWork.CommunityRepository.GetById(entity.Id) ?? throw new Exception("Community not found");
-
 		community.Name = entity.Name;
 		community.Description = entity.Description;
 		community.ModeratorId = entity.ModeratorId;
 		community.Moderator = entity.Moderator;
 
 		_unitOfWork.CommunityRepository.Update(entity);
+
 		_unitOfWork.SaveChanges();
 	}
 
@@ -61,8 +63,7 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		Community community = new() {
 			Name = communityDto.Name,
 			Description = communityDto.Description,
-			ModeratorId = communityDto.ModeratorId,
-			Moderator = communityDto.Moderator.ToUser()
+			ModeratorId = communityDto.ModeratorId
 		};
 
 		Add(community);
@@ -74,7 +75,6 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		community.Name = communityDto.Name;
 		community.Description = communityDto.Description;
 		community.ModeratorId = communityDto.ModeratorId;
-		community.Moderator = communityDto.Moderator.ToUser();
 
 		Update(community);
 	}

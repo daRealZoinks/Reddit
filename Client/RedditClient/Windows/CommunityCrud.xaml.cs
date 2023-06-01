@@ -13,6 +13,12 @@ public partial class CommunityCrud : Window {
 	public CommunityCrud() {
 		InitializeComponent();
 		AchievementListView.ItemsSource = _communities;
+
+		Initialize();
+	}
+
+	private async void Initialize() {
+		ModeratorComboBox.ItemsSource = await Users.GetUsers(App.Token);
 	}
 
 	private async void GetButton_Click(object sender, RoutedEventArgs e) {
@@ -35,7 +41,7 @@ public partial class CommunityCrud : Window {
 			Community community = new() {
 				Name = NameTextBox.Text,
 				Description = DescriptionTextBox.Text,
-				// TODO
+				ModeratorId = ((User)ModeratorComboBox.SelectedItem).Id
 			};
 
 			await Communities.AddCommunity(community, App.Token);
@@ -68,7 +74,7 @@ public partial class CommunityCrud : Window {
 
 			community.Name = NameTextBox.Text;
 			community.Description = DescriptionTextBox.Text;
-			// TODO
+			community.ModeratorId = ((User)ModeratorComboBox.SelectedItem).Id;
 
 			await Communities.UpdateCommunity(community, App.Token);
 		}
@@ -83,6 +89,6 @@ public partial class CommunityCrud : Window {
 
 		NameTextBox.Text = community.Name;
 		DescriptionTextBox.Text = community.Description;
-		// TODO
+		ModeratorComboBox.SelectedItem = community.ModeratorId;
 	}
 }

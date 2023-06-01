@@ -14,5 +14,6 @@ public class Community : BaseEntity {
 		get; set;
 	}
 
-	public List<User> Users { get; set; } = new();
+	// FIXME
+	// public List<User> Users { get; set; } = new();
 }

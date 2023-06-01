@@ -12,7 +12,7 @@
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
-                    <GridViewColumn Header="Moderator" DisplayMemberBinding="{Binding Moderator}" />
+                    <GridViewColumn Header="Moderator" DisplayMemberBinding="{Binding ModeratorId}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -35,8 +35,7 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Moderator" />
-                <!--enter the name of an user and either make a list using regex to select the user
-                or just enter the name and in create/update check if the user exists (also if it already has a community or not maybe)-->
+                <ComboBox Name="ModeratorComboBox" Width="174" />
             </StackPanel>
         </StackPanel>
     </Grid>

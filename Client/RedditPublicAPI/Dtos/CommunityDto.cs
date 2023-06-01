@@ -13,8 +13,4 @@ public class CommunityDto {
 	public int ModeratorId {
 		get; set;
 	}
-	public UserDto? Moderator {
-		get; set;
-	}
-	public List<UserDto> Users { get; set; } = new();
 }

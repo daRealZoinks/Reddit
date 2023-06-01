@@ -22,9 +22,7 @@ public static class CommunityMappingExtension {
 			Id = community.Id,
 			Name = community.Name,
 			Description = community.Description,
-			ModeratorId = community.ModeratorId,
-			Moderator = community.Moderator.ToUserDto(),
-			Users = community.Users.ToUserDtos()
+			ModeratorId = community.ModeratorId
 		};
 
 		return result;

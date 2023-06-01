@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
-public class Achievements {
+public static class Achievements {
 	private const string URI = "https://localhost:5001/api/Achievement";
 
 	public static async Task<List<Achievement>> GetAchievements(string token) {

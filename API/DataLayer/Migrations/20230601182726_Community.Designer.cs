@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230601182726_Community")]
+    partial class Community
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,8 +85,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModeratorId")
-                        .IsUnique();
+                    b.HasIndex("ModeratorId");
 
                     b.ToTable("Communities");
                 });
@@ -129,6 +131,9 @@ namespace DataLayer.Migrations
                     b.Property<DateTime>("AccountCreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CommunityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,9 +141,6 @@ namespace DataLayer.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ModeratedCommunityId")
-                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -152,6 +154,8 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("Users");
                 });
@@ -174,9 +178,9 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Entities.Community", b =>
                 {
                     b.HasOne("DataLayer.Entities.User", "Moderator")
-                        .WithOne("ModeratedCommunity")
-                        .HasForeignKey("DataLayer.Entities.Community", "ModeratorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("ModeratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Moderator");
@@ -203,8 +207,18 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.User", b =>
                 {
-                    b.Navigation("ModeratedCommunity");
+                    b.HasOne("DataLayer.Entities.Community", null)
+                        .WithMany("Users")
+                        .HasForeignKey("CommunityId");
+                });
 
+            modelBuilder.Entity("DataLayer.Entities.Community", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.User", b =>
+                {
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");

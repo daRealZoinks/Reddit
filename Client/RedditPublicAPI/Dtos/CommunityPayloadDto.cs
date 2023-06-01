@@ -19,10 +19,4 @@ public class CommunityPayloadDto {
 	public int ModeratorId {
 		get; set;
 	}
-	[Required]
-	public UserDto? Moderator {
-		get; set;
-	}
-	[Required]
-	public List<UserDto> Users { get; set; } = new();
 }

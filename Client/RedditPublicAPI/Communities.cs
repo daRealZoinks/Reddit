@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
-public class Communities {
+public static class Communities {
 	private const string URI = "https://localhost:5001/api/Community";
 
 	public static async Task<List<Community>> GetCommunities(string token) {
@@ -23,9 +23,7 @@ public class Communities {
 				Id = communityDto.Id,
 				Name = communityDto.Name,
 				Description = communityDto.Description,
-				ModeratorId = communityDto.ModeratorId,
-				Moderator = communityDto.Moderator,
-				Users = communityDto.Users,
+				ModeratorId = communityDto.ModeratorId
 			}).ToList();
 
 			return communities;
@@ -42,8 +40,7 @@ public class Communities {
 		CommunityPayloadDto communityPayloadDto = new() {
 			Name = community.Name,
 			Description = community.Description,
-			ModeratorId = community.ModeratorId,
-			Moderator = community.Moderator,
+			ModeratorId = community.ModeratorId
 		};
 
 		try {
@@ -76,9 +73,7 @@ public class Communities {
 			Id = community.Id,
 			Name = community.Name,
 			Description = community.Description,
-			ModeratorId = community.ModeratorId,
-			Moderator = community.Moderator,
-			Users = community.Users,
+			ModeratorId = community.ModeratorId
 		};
 
 		try {

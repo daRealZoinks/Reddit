@@ -7,7 +7,6 @@ namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class CommunityController : ControllerBase {
 	private readonly ICommunityCollectionService _communityCollectionService;
 
@@ -45,6 +44,24 @@ public class CommunityController : ControllerBase {
 	[Authorize(Roles = "Administrator")]
 	public IActionResult Post([FromBody] CommunityDto communityDto) {
 		_communityCollectionService.AddCommunityDto(communityDto);
+
+		return Ok();
+	}
+
+	// PUT api/<CommunityController>
+	[HttpPut]
+	[Authorize(Roles = "Administrator")]
+	public IActionResult Put([FromBody] CommunityDto communityDto) {
+		_communityCollectionService.UpdateCommunityDto(communityDto);
+
+		return Ok();
+	}
+
+	// DELETE api/<CommunityController>/5
+	[HttpDelete("{id:int}")]
+	[Authorize(Roles = "Administrator")]
+	public IActionResult Delete([FromRoute] int id) {
+		_communityCollectionService?.DeleteCommunityDto(id);
 
 		return Ok();
 	}

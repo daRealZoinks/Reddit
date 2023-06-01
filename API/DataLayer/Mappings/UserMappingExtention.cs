@@ -23,10 +23,7 @@ public static class UserMappingExtention {
 			PasswordHash = user.PasswordHash,
 			AccountCreationDate = user.AccountCreationDate,
 			Description = user.Description,
-			Role = user.Role,
-
-			SentMessages = user.SentMessages.ToMessageDtos(),
-			ReceivedMessages = user.ReceivedMessages.ToMessageDtos()
+			Role = user.Role
 		};
 
 		return result;
