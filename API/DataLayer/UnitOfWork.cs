@@ -2,40 +2,46 @@
 
 namespace DataLayer;
 
-public class UnitOfWork
-{
-    private readonly AppDbContext _appDbContext;
+public class UnitOfWork {
+	private readonly AppDbContext _appDbContext;
 
-    public UnitOfWork(AppDbContext appDbContext,
-        UsersRepository usersRepository,
-        MessagesRepository messagesRepository,
-        AchievementRepository achievementRepository)
-    {
-        _appDbContext = appDbContext;
-        UsersRepository = usersRepository;
-        MessagesRepository = messagesRepository;
-        AchievementRepository = achievementRepository;
-    }
+	public UnitOfWork(AppDbContext appDbContext,
+		UsersRepository usersRepository,
+		MessagesRepository messagesRepository,
+		AchievementRepository achievementRepository,
+		CommunityRepository communityRepository) {
+		_appDbContext = appDbContext;
+		UsersRepository = usersRepository;
+		MessagesRepository = messagesRepository;
+		AchievementRepository = achievementRepository;
+		CommunityRepository = communityRepository;
+	}
 
-    public UsersRepository UsersRepository { get; }
-    public MessagesRepository MessagesRepository { get; }
-    public AchievementRepository AchievementRepository { get; }
+	public UsersRepository UsersRepository {
+		get;
+	}
+	public MessagesRepository MessagesRepository {
+		get;
+	}
+	public AchievementRepository AchievementRepository {
+		get;
+	}
+	public CommunityRepository CommunityRepository {
+		get;
+	}
 
-    public void SaveChanges()
-    {
-        try
-        {
-            _appDbContext.SaveChanges();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Error saving changes to database:");
-            Console.WriteLine();
-            Console.WriteLine(e.Message);
-            Console.WriteLine();
-            Console.WriteLine(e.InnerException);
-            Console.WriteLine();
-            Console.WriteLine(e.StackTrace);
-        }
-    }
+	public void SaveChanges() {
+		try {
+			_appDbContext.SaveChanges();
+		}
+		catch(Exception e) {
+			Console.WriteLine("Error saving changes to database:");
+			Console.WriteLine();
+			Console.WriteLine(e.Message);
+			Console.WriteLine();
+			Console.WriteLine(e.InnerException);
+			Console.WriteLine();
+			Console.WriteLine(e.StackTrace);
+		}
+	}
 }
