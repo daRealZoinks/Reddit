@@ -2,7 +2,7 @@
 
 namespace RedditPublicAPI.Dtos;
 
-public class AchievementPayloadDto {
+public class CommunityPayloadDto {
 	[Required]
 	public int Id {
 		get; set;
@@ -16,7 +16,7 @@ public class AchievementPayloadDto {
 		get; set;
 	}
 	[Required]
-	public int Value {
+	public int ModeratorId {
 		get; set;
 	}
 }

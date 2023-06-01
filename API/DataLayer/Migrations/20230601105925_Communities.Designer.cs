@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230601105925_Communities")]
+    partial class Communities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,33 +62,6 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Achievements");
-                });
-
-            modelBuilder.Entity("DataLayer.Entities.Community", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ModeratorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ModeratorId")
-                        .IsUnique();
-
-                    b.ToTable("Communities");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Message", b =>
@@ -137,9 +113,6 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModeratedCommunityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -171,17 +144,6 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.Community", b =>
-                {
-                    b.HasOne("DataLayer.Entities.User", "Moderator")
-                        .WithOne("ModeratedCommunity")
-                        .HasForeignKey("DataLayer.Entities.Community", "ModeratorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Moderator");
-                });
-
             modelBuilder.Entity("DataLayer.Entities.Message", b =>
                 {
                     b.HasOne("DataLayer.Entities.User", "Receiver")
@@ -203,8 +165,6 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.User", b =>
                 {
-                    b.Navigation("ModeratedCommunity");
-
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");

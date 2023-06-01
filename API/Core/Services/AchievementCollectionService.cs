@@ -5,85 +5,78 @@ using DataLayer.Mappings;
 
 namespace Core.Services;
 
-public class AchievementCollectionService : IAchievementCollectionService
-{
-    private readonly UnitOfWork _unitOfWork;
+public class AchievementCollectionService : IAchievementCollectionService {
+	private readonly UnitOfWork _unitOfWork;
 
-    public AchievementCollectionService(UnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
+	public AchievementCollectionService(UnitOfWork unitOfWork) {
+		_unitOfWork = unitOfWork;
+	}
 
-    public void Add(Achievement entity)
-    {
-        _unitOfWork.AchievementRepository.Add(entity);
-        _unitOfWork.SaveChanges();
-    }
+	public void Add(Achievement entity) {
+		_unitOfWork.AchievementRepository.Add(entity);
 
-    public void Delete(int id)
-    {
-        var achievement = _unitOfWork.AchievementRepository.GetById(id) ?? throw new Exception("Achievement not found");
+		_unitOfWork.SaveChanges();
+	}
 
-        _unitOfWork.AchievementRepository.Remove(achievement);
-        _unitOfWork.SaveChanges();
-    }
+	public void Delete(int id) {
+		var achievement = _unitOfWork.AchievementRepository.GetById(id) ?? throw new Exception("Achievement not found");
 
-    public List<Achievement> GetAll()
-    {
-        var results = _unitOfWork.AchievementRepository.GetAll();
-        return results;
-    }
+		_unitOfWork.AchievementRepository.Remove(achievement);
 
-    public Achievement? GetById(int id)
-    {
-        return _unitOfWork.AchievementRepository.GetById(id);
-    }
+		_unitOfWork.SaveChanges();
+	}
 
-    public void Update(Achievement entity)
-    {
-        var achievement = _unitOfWork.AchievementRepository.GetById(entity.Id) ??
-                          throw new Exception("Achievement not found");
+	public List<Achievement> GetAll() {
+		var results = _unitOfWork.AchievementRepository.GetAll();
+		return results;
+	}
 
-        achievement.Name = entity.Name;
-        achievement.Description = entity.Description;
-        achievement.Value = entity.Value;
+	public Achievement? GetById(int id) {
+		return _unitOfWork.AchievementRepository.GetById(id);
+	}
 
-        _unitOfWork.AchievementRepository.Update(entity);
-        _unitOfWork.SaveChanges();
-    }
+	public void Update(Achievement entity) {
+		var achievement = _unitOfWork.AchievementRepository.GetById(entity.Id) ??
+						  throw new Exception("Achievement not found");
 
-    public void AddAchievementDto(AchievementDto achievementDto)
-    {
-        var achievement = new Achievement
-        {
-            Name = achievementDto.Name,
-            Description = achievementDto.Description,
-            Value = achievementDto.Value
-        };
+		achievement.Name = entity.Name;
+		achievement.Description = entity.Description;
+		achievement.Value = entity.Value;
 
-        Add(achievement);
-    }
+		_unitOfWork.AchievementRepository.Update(entity);
 
-    public List<AchievementDto>? GetAchievementDtos()
-    {
-        var achievementDtos = GetAll().ToAchievementDtos();
-        return achievementDtos;
-    }
+		_unitOfWork.SaveChanges();
+	}
 
-    public AchievementDto? GetAchievementDtoById(int id)
-    {
-        var achievementDtos = GetById(id)?.ToAchievementDto();
-        return achievementDtos;
-    }
+	public void AddAchievementDto(AchievementDto achievementDto) {
+		var achievement = new Achievement {
+			Name = achievementDto.Name,
+			Description = achievementDto.Description,
+			Value = achievementDto.Value
+		};
 
-    public void UpdateAchievementDto(AchievementDto achievementDto)
-    {
-        var achievement = GetById(achievementDto.Id) ?? throw new Exception("Achievement not found");
+		Add(achievement);
+	}
 
-        achievement.Name = achievementDto.Name;
-        achievement.Description = achievementDto.Description;
-        achievement.Value = achievementDto.Value;
+	public List<AchievementDto>? GetAchievementDtos() {
+		var achievementDtos = GetAll().ToAchievementDtos();
 
-        Update(achievement);
-    }
+		return achievementDtos;
+	}
+
+	public AchievementDto? GetAchievementDtoById(int id) {
+		var achievementDtos = GetById(id)?.ToAchievementDto();
+
+		return achievementDtos;
+	}
+
+	public void UpdateAchievementDto(AchievementDto achievementDto) {
+		var achievement = GetById(achievementDto.Id) ?? throw new Exception("Achievement not found");
+
+		achievement.Name = achievementDto.Name;
+		achievement.Description = achievementDto.Description;
+		achievement.Value = achievementDto.Value;
+
+		Update(achievement);
+	}
 }

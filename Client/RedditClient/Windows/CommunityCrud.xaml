@@ -1,17 +1,18 @@
-﻿<Window x:Class="RedditClient.Windows.AchievementCrud"
+﻿<Window x:Class="RedditClient.Windows.CommunityCrud"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RedditClient.Windows"
         mc:Ignorable="d"
-        Title="AchievementCrud" Height="450" Width="800">
+        Title="CommunityCrud" Height="450" Width="800">
     <Grid>
         <ListView Name="AchievementListView" Margin="0,0,0,262" SelectionChanged="AchievementListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
-                    <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Value}" />
+                    <GridViewColumn Header="Moderator" DisplayMemberBinding="{Binding ModeratorId}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -33,8 +34,8 @@
                 <TextBox Name="DescriptionTextBox" TextWrapping="Wrap" Width="174" />
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Value" />
-                <TextBox Name="ValueTextBox" TextWrapping="Wrap" Width="174" />
+                <TextBlock Text="Moderator" />
+                <ComboBox Name="ModeratorComboBox" Width="174" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -11,6 +11,8 @@
             <Button Name="MessagesButton" Content="Messages" Height="41" Width="116" Click="MessagesButton_Click" />
             <Button Name="AchievementsButton" Content="Achievements" Height="41" Width="116"
                     Click="AchievementsButton_Click" />
+            <Button Name="CommunitiesButton" Content="Communities" Height="41" Width="116"
+                    Click="CommunitiesButton_Click" />
         </StackPanel>
     </Grid>
 </Window>
