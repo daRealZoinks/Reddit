@@ -12,34 +12,33 @@ builder.Services.AddSingleton<AppDbContext>();
 builder.Services.AddSingleton<UsersRepository>();
 builder.Services.AddSingleton<MessagesRepository>();
 builder.Services.AddSingleton<AchievementRepository>();
+builder.Services.AddSingleton<CommunityRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 builder.Services.AddSingleton<AuthorizationService>();
 builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
 builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionService>();
 builder.Services.AddSingleton<IAchievementCollectionService, AchievementCollectionService>();
+builder.Services.AddSingleton<ICommunityCollectionService, CommunityCollectionService>();
 
 // Configure authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero,
+builder.Services.AddAuthentication(options => {
+	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+	options.RequireHttpsMetadata = false;
+	options.SaveToken = true;
+	options.TokenValidationParameters = new TokenValidationParameters {
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		ClockSkew = TimeSpan.Zero,
 
-        ValidIssuer = "Backend",
-        ValidAudience = "Frontend",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
-    };
+		ValidIssuer = "Backend",
+		ValidAudience = "Frontend",
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
+	};
 });
 
 builder.Services.AddControllers();
@@ -51,10 +50,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+if(app.Environment.IsDevelopment()) {
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

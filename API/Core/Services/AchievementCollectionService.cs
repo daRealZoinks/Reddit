@@ -14,6 +14,7 @@ public class AchievementCollectionService : IAchievementCollectionService {
 
 	public void Add(Achievement entity) {
 		_unitOfWork.AchievementRepository.Add(entity);
+
 		_unitOfWork.SaveChanges();
 	}
 
@@ -21,6 +22,7 @@ public class AchievementCollectionService : IAchievementCollectionService {
 		var achievement = _unitOfWork.AchievementRepository.GetById(id) ?? throw new Exception("Achievement not found");
 
 		_unitOfWork.AchievementRepository.Remove(achievement);
+
 		_unitOfWork.SaveChanges();
 	}
 
@@ -42,6 +44,7 @@ public class AchievementCollectionService : IAchievementCollectionService {
 		achievement.Value = entity.Value;
 
 		_unitOfWork.AchievementRepository.Update(entity);
+
 		_unitOfWork.SaveChanges();
 	}
 
@@ -57,11 +60,13 @@ public class AchievementCollectionService : IAchievementCollectionService {
 
 	public List<AchievementDto>? GetAchievementDtos() {
 		var achievementDtos = GetAll().ToAchievementDtos();
+
 		return achievementDtos;
 	}
 
 	public AchievementDto? GetAchievementDtoById(int id) {
 		var achievementDtos = GetById(id)?.ToAchievementDto();
+
 		return achievementDtos;
 	}
 

@@ -5,10 +5,10 @@ using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
-public class Achievements {
-	private const string URI = "https://localhost:5001/api/Achievement";
+public class Communities {
+	private const string URI = "https://localhost:5001/api/Community";
 
-	public static async Task<List<Achievement>> GetAchievements(string token) {
+	public static async Task<List<Community>> GetCommunities(string token) {
 		using HttpClient httpClient = new();
 		httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -16,34 +16,38 @@ public class Achievements {
 			var response = await httpClient.GetAsync(URI);
 			response.EnsureSuccessStatusCode();
 
-			var achievementDtos = await response.Content.ReadFromJsonAsync<List<AchievementDto>>() ??
+			var communityDtos = await response.Content.ReadFromJsonAsync<List<CommunityDto>>() ??
 								  throw new Exception("Failed to retrieve achievement data.");
-			var achievements = achievementDtos.Select(achievementDto => new Achievement {
-				Id = achievementDto.Id,
-				Name = achievementDto.Name,
-				Description = achievementDto.Description,
-				Value = achievementDto.Value
+
+			var communities = communityDtos.Select(communityDto => new Community {
+				Id = communityDto.Id,
+				Name = communityDto.Name,
+				Description = communityDto.Description,
+				ModeratorId = communityDto.ModeratorId,
+				Moderator = communityDto.Moderator,
+				Users = communityDto.Users,
 			}).ToList();
 
-			return achievements;
+			return communities;
 		}
 		catch(Exception ex) {
 			throw new Exception($"Failed to retrieve achievement data from {URI}. {ex.Message}", ex);
 		}
 	}
 
-	public static async Task AddAchievement(Achievement achievement, string token) {
+	public static async Task AddCommunity(Community community, string token) {
 		using HttpClient httpClient = new();
 		httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-		AchievementPayloadDto achievementPayloadDto = new() {
-			Name = achievement.Name,
-			Description = achievement.Description,
-			Value = achievement.Value
+		CommunityPayloadDto communityPayloadDto = new() {
+			Name = community.Name,
+			Description = community.Description,
+			ModeratorId = community.ModeratorId,
+			Moderator = community.Moderator,
 		};
 
 		try {
-			var response = await httpClient.PostAsJsonAsync(URI, achievementPayloadDto);
+			var response = await httpClient.PostAsJsonAsync(URI, communityPayloadDto);
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {
@@ -51,12 +55,12 @@ public class Achievements {
 		}
 	}
 
-	public static async Task DeleteAchievement(Achievement achievement, string token) {
+	public static async Task DeleteCommunity(Community community, string token) {
 		using HttpClient httpClient = new();
 		httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 		try {
-			var response = await httpClient.DeleteAsync($"{URI}/{achievement.Id}");
+			var response = await httpClient.DeleteAsync($"{URI}/{community.Id}");
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {
@@ -64,19 +68,21 @@ public class Achievements {
 		}
 	}
 
-	public static async Task UpdateAchievement(Achievement achievement, string token) {
+	public static async Task UpdateCommunity(Community community, string token) {
 		using HttpClient httpClient = new();
 		httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-		AchievementPayloadDto achievementPayloadDto = new() {
-			Id = achievement.Id,
-			Name = achievement.Name,
-			Description = achievement.Description,
-			Value = achievement.Value
+		CommunityPayloadDto communityPayloadDto = new() {
+			Id = community.Id,
+			Name = community.Name,
+			Description = community.Description,
+			ModeratorId = community.ModeratorId,
+			Moderator = community.Moderator,
+			Users = community.Users,
 		};
 
 		try {
-			var response = await httpClient.PutAsJsonAsync($"{URI}", achievementPayloadDto);
+			var response = await httpClient.PutAsJsonAsync($"{URI}", communityPayloadDto);
 			response.EnsureSuccessStatusCode();
 		}
 		catch(Exception ex) {

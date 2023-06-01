@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Entities;
+﻿namespace RedditPublicAPI.Entities;
 
 public class Community : BaseEntity {
 	public string Name {
@@ -13,6 +13,5 @@ public class Community : BaseEntity {
 	public User? Moderator {
 		get; set;
 	}
-
 	public List<User> Users { get; set; } = new();
 }

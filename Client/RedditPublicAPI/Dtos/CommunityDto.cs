@@ -1,4 +1,5 @@
-﻿namespace DataLayer.Dtos;
+﻿namespace RedditPublicAPI.Dtos;
+
 public class CommunityDto {
 	public int Id {
 		get; set;
