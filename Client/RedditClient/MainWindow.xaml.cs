@@ -64,7 +64,7 @@ public partial class MainWindow : Window
 
         try
         {
-            Users.Register(registerDto);
+            await Users.Register(registerDto);
 
             await Login(EmailTextBox.Text, PasswordPasswordBox.Password);
         }

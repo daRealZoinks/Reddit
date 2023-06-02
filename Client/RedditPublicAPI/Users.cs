@@ -103,8 +103,9 @@ public static class Users {
 		}
 	}
 
-	public static async void Register(RegisterDto registerDto) {
-		using HttpClient httpClient = new();
+    public static async Task Register(RegisterDto registerDto)
+    {
+        using HttpClient httpClient = new();
 
 		try {
 			var response = await httpClient.PostAsJsonAsync($"{URI}/register", registerDto);
