@@ -19,6 +19,7 @@ builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
 builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionService>();
 builder.Services.AddSingleton<IAchievementCollectionService, AchievementCollectionService>();
 builder.Services.AddSingleton<ICommunityCollectionService, CommunityCollectionService>();
+builder.Services.AddSingleton<IPostCollectionService, PostCollectionService>();
 
 // Configure authentication
 builder.Services.AddAuthentication(options => {

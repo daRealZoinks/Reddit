@@ -17,6 +17,9 @@ public class AppDbContext : DbContext {
 	public DbSet<Community> Communities {
 		get; set;
 	}
+	public DbSet<Post> Posts {
+		get; set;
+	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 		// SqlServer authentication
