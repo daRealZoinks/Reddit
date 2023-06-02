@@ -13,7 +13,9 @@ builder.Services.AddSingleton<UsersRepository>();
 builder.Services.AddSingleton<MessagesRepository>();
 builder.Services.AddSingleton<AchievementRepository>();
 builder.Services.AddSingleton<CommunityRepository>();
+builder.Services.AddSingleton<PostsRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
+
 builder.Services.AddSingleton<AuthorizationService>();
 builder.Services.AddSingleton<IUserCollectionService, UserCollectionService>();
 builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionService>();

@@ -58,20 +58,6 @@ public partial class MessageCrud : Window {
 		}
 	}
 
-	private void DeleteButton_Click(object sender, RoutedEventArgs e) {
-		try {
-			if(MessagesListView.SelectedValue is not Message message)
-				return;
-
-			Messages.DeleteMessage(message, App.Token);
-
-			_messages.Remove(message);
-		}
-		catch(Exception ex) {
-			MessageBox.Show(ex.Message);
-		}
-	}
-
 	private void UpdateButton_Click(object sender, RoutedEventArgs e) {
 		try {
 			if(MessagesListView.SelectedValue is not Message message)
@@ -83,6 +69,20 @@ public partial class MessageCrud : Window {
 			message.ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id;
 
 			Messages.UpdateMessage(message, App.Token);
+		}
+		catch(Exception ex) {
+			MessageBox.Show(ex.Message);
+		}
+	}
+
+	private void DeleteButton_Click(object sender, RoutedEventArgs e) {
+		try {
+			if(MessagesListView.SelectedValue is not Message message)
+				return;
+
+			Messages.DeleteMessage(message, App.Token);
+
+			_messages.Remove(message);
 		}
 		catch(Exception ex) {
 			MessageBox.Show(ex.Message);
