@@ -26,4 +26,9 @@ public partial class Menu : Window {
 		CommunityCrud communityCrud = new();
 		communityCrud.Show();
 	}
+
+	private void PostsButton_Click(object sender, RoutedEventArgs e) {
+		PostCrud postCrud = new();
+		postCrud.Show();
+	}
 }

@@ -5,14 +5,15 @@ namespace DataLayer;
 public class UnitOfWork {
 	private readonly AppDbContext _appDbContext;
 
-	public UnitOfWork(AppDbContext appDbContext,
-		UsersRepository usersRepository, MessagesRepository messagesRepository,
-		AchievementRepository achievementRepository, CommunityRepository communityRepository) {
+	public UnitOfWork(AppDbContext appDbContext, UsersRepository usersRepository,
+		MessagesRepository messagesRepository, AchievementRepository achievementRepository,
+		CommunityRepository communityRepository, PostsRepository postsRepository) {
 		_appDbContext = appDbContext;
 		UsersRepository = usersRepository;
 		MessagesRepository = messagesRepository;
 		AchievementRepository = achievementRepository;
 		CommunityRepository = communityRepository;
+		PostsRepository = postsRepository;
 	}
 
 	public UsersRepository UsersRepository {
@@ -25,6 +26,9 @@ public class UnitOfWork {
 		get;
 	}
 	public CommunityRepository CommunityRepository {
+		get;
+	}
+	public PostsRepository PostsRepository {
 		get;
 	}
 
