@@ -31,4 +31,9 @@ public partial class Menu : Window {
 		PostCrud postCrud = new();
 		postCrud.Show();
 	}
+
+	private void CommentsButton_Click(object sender, RoutedEventArgs e) {
+		CommentCrud commentCrud = new();
+		commentCrud.Show();
+	}
 }
