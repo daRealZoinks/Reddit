@@ -20,6 +20,9 @@ public class AppDbContext : DbContext {
 	public DbSet<Post> Posts {
 		get; set;
 	}
+	public DbSet<Comment> Comments {
+		get; set;
+	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 		// SqlServer authentication
@@ -69,6 +72,12 @@ public class AppDbContext : DbContext {
 			.HasForeignKey<Community>(c => c.ModeratorId)
 			.OnDelete(DeleteBehavior.Restrict);
 
+
+		/*
+		Introducing FOREIGN KEY constraint 'FK_Comments_Users_AuthorId' on table 'Comments' may cause cycles or multiple cascade paths. 
+		Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints.
+		Could not create constraint or index. See previous errors
+		 */
 
 		base.OnModelCreating(modelBuilder);
 	}

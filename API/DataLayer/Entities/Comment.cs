@@ -1,10 +1,6 @@
 ﻿namespace DataLayer.Entities;
 
-public class Comment {
-	public int Id {
-		get; set;
-	}
-
+public class Comment : BaseEntity {
 	public DateTime PostDate {
 		get; set;
 	}
@@ -21,11 +17,11 @@ public class Comment {
 		get; set;
 	}
 
-	public int UserId {
+	public int AuthorId {
 		get; set;
 	}
 
-	public User User {
+	public User Author {
 		get; set;
 	}
 }

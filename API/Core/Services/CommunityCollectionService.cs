@@ -11,6 +11,12 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		_unitOfWork = unitOfWork;
 	}
 
+	public void Add(Community entity) {
+		_unitOfWork.CommunityRepository.Add(entity);
+
+		_unitOfWork.SaveChanges();
+	}
+
 	public List<Community> GetAll() {
 		var results = _unitOfWork.CommunityRepository.GetAll();
 
@@ -19,20 +25,6 @@ public class CommunityCollectionService : ICommunityCollectionService {
 
 	public Community? GetById(int id) {
 		return _unitOfWork.CommunityRepository.GetById(id);
-	}
-
-	public void Add(Community entity) {
-		_unitOfWork.CommunityRepository.Add(entity);
-
-		_unitOfWork.SaveChanges();
-	}
-
-	public void Delete(int id) {
-		var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
-
-		_unitOfWork.CommunityRepository.Remove(community);
-
-		_unitOfWork.SaveChanges();
 	}
 
 	public void Update(Community entity) {
@@ -47,16 +39,12 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		_unitOfWork.SaveChanges();
 	}
 
-	public CommunityDto? GetCommunityDtoById(int id) {
-		var communityDto = GetById(id)?.ToCommunityDto();
+	public void Delete(int id) {
+		var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
 
-		return communityDto;
-	}
+		_unitOfWork.CommunityRepository.Remove(community);
 
-	public List<CommunityDto>? GetCommunityDtos() {
-		var communityDtos = GetAll().ToCommunityDtos();
-
-		return communityDtos;
+		_unitOfWork.SaveChanges();
 	}
 
 	public void AddCommunityDto(CommunityDto communityDto) {
@@ -67,6 +55,18 @@ public class CommunityCollectionService : ICommunityCollectionService {
 		};
 
 		Add(community);
+	}
+
+	public CommunityDto? GetCommunityDtoById(int id) {
+		var communityDto = GetById(id)?.ToCommunityDto();
+
+		return communityDto;
+	}
+
+	public List<CommunityDto>? GetCommunityDtos() {
+		var communityDtos = GetAll().ToCommunityDtos();
+
+		return communityDtos;
 	}
 
 	public void UpdateCommunityDto(CommunityDto communityDto) {

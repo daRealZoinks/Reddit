@@ -13,7 +13,7 @@ public class CommentDto {
 	public int PostId {
 		get; set;
 	}
-	public int UserId {
+	public int AuthorId {
 		get; set;
 	}
 }

@@ -14,6 +14,7 @@ builder.Services.AddSingleton<MessagesRepository>();
 builder.Services.AddSingleton<AchievementRepository>();
 builder.Services.AddSingleton<CommunityRepository>();
 builder.Services.AddSingleton<PostsRepository>();
+builder.Services.AddSingleton<CommentsRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 
 builder.Services.AddSingleton<AuthorizationService>();
@@ -22,6 +23,7 @@ builder.Services.AddSingleton<IMessageCollectionService, MessageCollectionServic
 builder.Services.AddSingleton<IAchievementCollectionService, AchievementCollectionService>();
 builder.Services.AddSingleton<ICommunityCollectionService, CommunityCollectionService>();
 builder.Services.AddSingleton<IPostCollectionService, PostCollectionService>();
+builder.Services.AddSingleton<ICommentCollectionService, CommentCollectionService>();
 
 // Configure authentication
 builder.Services.AddAuthentication(options => {
