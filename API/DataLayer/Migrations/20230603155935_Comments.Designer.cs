@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230603105439_Comments")]
+    [Migration("20230603155935_Comments")]
     partial class Comments
     {
         /// <inheritdoc />
@@ -236,9 +236,9 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Entities.Comment", b =>
                 {
                     b.HasOne("DataLayer.Entities.User", "Author")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Entities.Post", "Post")
@@ -295,6 +295,8 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("ModeratedCommunity");
 
                     b.Navigation("ReceivedMessages");

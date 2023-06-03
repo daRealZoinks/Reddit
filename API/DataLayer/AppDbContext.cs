@@ -72,12 +72,11 @@ public class AppDbContext : DbContext {
 			.HasForeignKey<Community>(c => c.ModeratorId)
 			.OnDelete(DeleteBehavior.Restrict);
 
-
-		/*
-		Introducing FOREIGN KEY constraint 'FK_Comments_Users_AuthorId' on table 'Comments' may cause cycles or multiple cascade paths. 
-		Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints.
-		Could not create constraint or index. See previous errors
-		 */
+		modelBuilder.Entity<Comment>()
+			.HasOne(c => c.Author)
+			.WithMany(a => a.Comments)
+			.HasForeignKey(c => c.AuthorId)
+			.OnDelete(DeleteBehavior.Restrict);
 
 		base.OnModelCreating(modelBuilder);
 	}

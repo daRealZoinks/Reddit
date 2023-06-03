@@ -233,9 +233,9 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Entities.Comment", b =>
                 {
                     b.HasOne("DataLayer.Entities.User", "Author")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Entities.Post", "Post")
@@ -292,6 +292,8 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("ModeratedCommunity");
 
                     b.Navigation("ReceivedMessages");

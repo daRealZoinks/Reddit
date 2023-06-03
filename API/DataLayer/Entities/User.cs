@@ -31,5 +31,6 @@ public class User : BaseEntity {
 	public List<Message> SentMessages { get; set; } = new();
 	public List<Message> ReceivedMessages { get; set; } = new();
 	public List<Achievement> Achievements { get; set; } = new();
+	public List<Comment> Comments { get; set; } = new();
 	// public List<Community> Communities { get; set; } = new();
 }

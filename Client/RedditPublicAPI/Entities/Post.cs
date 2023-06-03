@@ -20,4 +20,8 @@ public class Post : BaseEntity {
 	public User Author {
 		get; set;
 	}
+
+	public override string ToString() {
+		return Title;
+	}
 }
