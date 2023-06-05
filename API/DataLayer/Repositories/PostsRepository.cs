@@ -2,8 +2,9 @@
 
 namespace DataLayer.Repositories;
 
-public class PostsRepository : RepositoryBase<Post> {
-	public PostsRepository(AppDbContext appDbContext) : base(appDbContext) {
-
-	}
+public class PostsRepository : RepositoryBase<Post>
+{
+    public PostsRepository(AppDbContext appDbContext) : base(appDbContext)
+    {
+    }
 }

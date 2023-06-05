@@ -3,28 +3,30 @@ using DataLayer.Entities;
 
 namespace DataLayer.Mappings;
 
-public static class CommunityMappingExtension {
-	public static List<CommunityDto> ToCommunityDtos(this List<Community> communities) {
-		if(communities == null)
-			return null;
+public static class CommunityMappingExtension
+{
+    public static List<CommunityDto> ToCommunityDtos(this List<Community> communities)
+    {
+        if (communities == null)
+            return null;
 
-		var results = communities.Select(x => x.ToCommunityDto()).ToList();
+        var results = communities.Select(x => x.ToCommunityDto()).ToList();
 
-		return results;
-	}
+        return results;
+    }
 
-	public static CommunityDto ToCommunityDto(this Community community) {
-		if(community == null) {
-			return null;
-		}
+    public static CommunityDto ToCommunityDto(this Community community)
+    {
+        if (community == null) return null;
 
-		var result = new CommunityDto {
-			Id = community.Id,
-			Name = community.Name,
-			Description = community.Description,
-			ModeratorId = community.ModeratorId
-		};
+        var result = new CommunityDto
+        {
+            Id = community.Id,
+            Name = community.Name,
+            Description = community.Description,
+            ModeratorId = community.ModeratorId
+        };
 
-		return result;
-	}
+        return result;
+    }
 }

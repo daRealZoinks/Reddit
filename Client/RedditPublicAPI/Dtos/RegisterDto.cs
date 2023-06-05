@@ -1,5 +1,5 @@
-﻿using RedditPublicAPI.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using RedditPublicAPI.Enums;
 
 namespace RedditPublicAPI.Dtos;
 

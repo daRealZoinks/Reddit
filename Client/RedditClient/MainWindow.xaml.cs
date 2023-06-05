@@ -1,10 +1,10 @@
-﻿using RedditClient.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
+using RedditClient.Windows;
 using RedditPublicAPI;
 using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Enums;
-using System;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace RedditClient;
 

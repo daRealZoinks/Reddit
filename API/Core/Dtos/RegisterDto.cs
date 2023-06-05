@@ -1,5 +1,5 @@
-﻿using DataLayer.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DataLayer.Enums;
 
 namespace Core.Dtos;
 

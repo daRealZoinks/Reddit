@@ -1,9 +1,9 @@
-﻿using RedditPublicAPI;
-using RedditPublicAPI.Entities;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using RedditPublicAPI;
+using RedditPublicAPI.Entities;
 
 namespace RedditClient.Windows;
 
