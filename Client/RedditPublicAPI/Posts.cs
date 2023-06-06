@@ -29,7 +29,8 @@ public class Posts
                 PostDate = postDto.PostDate,
                 Title = postDto.Title,
                 Content = postDto.Content,
-                AuthorId = postDto.AuthorId
+                AuthorId = postDto.AuthorId,
+                CommunityId = postDto.CommunityId
             }).ToList();
         }
         catch (HttpRequestException ex)
