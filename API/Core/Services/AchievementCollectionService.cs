@@ -91,4 +91,18 @@ public class AchievementCollectionService : IAchievementCollectionService
 
         Update(achievement);
     }
+
+    public void AddAchievementToUser(Achievement achievement, User user)
+    {
+        achievement.Users.Add(user);
+
+        Update(achievement);
+    }
+
+    public void RemoveAchievementFromUser(Achievement achievement, User user)
+    {
+        achievement.Users.Remove(user);
+
+        Update(achievement);
+    }
 }

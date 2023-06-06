@@ -104,7 +104,6 @@ public class CommunityCollectionService : ICommunityCollectionService
     public void AddUserToCommunity(Community community, User user)
     {
         community.Users.Add(user);
-        user.Communities.Add(community);
 
         Update(community);
     }
@@ -112,7 +111,6 @@ public class CommunityCollectionService : ICommunityCollectionService
     public void RemoveUserFromCommunity(Community community, User user)
     {
         community.Users.Remove(user);
-        user.Communities.Remove(community);
 
         Update(community);
     }

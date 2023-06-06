@@ -8,6 +8,7 @@ namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CommunityController : ControllerBase
 {
     private readonly ICommunityCollectionService _communityCollectionService;
@@ -111,6 +112,4 @@ public class CommunityController : ControllerBase
 
         return Ok();
     }
-
-
 }

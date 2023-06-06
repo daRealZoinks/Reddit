@@ -9,5 +9,6 @@ public class Post : BaseEntity
     public int AuthorId { get; set; }
     public User Author { get; set; }
 
-    public Community Community { get; set; } = new();
+    public int CommunityId { get; set; }
+    public Community Community { get; set; }
 }

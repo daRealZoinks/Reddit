@@ -9,4 +9,6 @@ public interface IAchievementCollectionService : ICollectionService<Achievement>
     AchievementDto? GetAchievementDtoById(int id);
     void UpdateAchievementDto(AchievementDto achievementDto);
     void AddAchievementDto(AchievementDto achievementDto);
+    void AddAchievementToUser(Achievement achievement, User user);
+    void RemoveAchievementFromUser(Achievement achievement, User user);
 }
