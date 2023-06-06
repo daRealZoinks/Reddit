@@ -1,4 +1,5 @@
-﻿using Core.Services;
+﻿using Core.Dtos;
+using Core.Services;
 using DataLayer.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,14 @@ namespace RedditAPI.Controllers;
 public class AchievementController : ControllerBase
 {
     private readonly IAchievementCollectionService _achievementCollectionService;
+    private readonly IUserCollectionService _userCollectionService;
 
-    public AchievementController(IAchievementCollectionService achievementCollectionService)
+    public AchievementController(IAchievementCollectionService achievementCollectionService, IUserCollectionService userCollectionService)
     {
-        _achievementCollectionService = achievementCollectionService ??
-                                        throw new ArgumentNullException(nameof(achievementCollectionService));
+        _achievementCollectionService = achievementCollectionService ?? throw new ArgumentNullException(nameof(achievementCollectionService));
+        _userCollectionService = userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
     }
+
 
     // GET: api/<AchievementController>
     [HttpGet]
@@ -40,6 +43,42 @@ public class AchievementController : ControllerBase
         if (result == null) return NotFound();
 
         return Ok(result);
+    }
+
+    // POST api/<AchievementController>/addachievementtouser
+    [HttpPost("addachievementtouser")]
+    [Authorize(Roles = "Administrator")]
+    public IActionResult PostAchievementToUser(AchievementToUserDto userToCommunityDto)
+    {
+        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
+        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+
+        if (user == null || achievement == null)
+        {
+            return BadRequest("Could not add user to community.");
+        }
+
+        _achievementCollectionService.AddAchievementToUser(achievement, user);
+
+        return Ok();
+    }
+
+    // POST api/<AchievementController>/removeachievementfromuser
+    [HttpPost("removeachievementfromuser")]
+    [Authorize(Roles = "Administrator")]
+    public IActionResult DeleteAchievementFromUser(AchievementToUserDto userToCommunityDto)
+    {
+        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
+        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+
+        if (user == null || achievement == null)
+        {
+            return BadRequest("Could not remove user from community.");
+        }
+
+        _achievementCollectionService.RemoveAchievementFromUser(achievement, user);
+
+        return Ok();
     }
 
     // POST api/<AchievementController>

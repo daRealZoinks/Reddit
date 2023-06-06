@@ -126,8 +126,6 @@ public class UserCollectionService : IUserCollectionService
 
         if (user == null) return null;
 
-        if (!_authorizationService.VerifyHashedPassword(user.PasswordHash, payload.Password)) return null;
-
-        return _authorizationService.GetToken(user);
+        return !_authorizationService.VerifyHashedPassword(user.PasswordHash, payload.Password) ? null : _authorizationService.GetToken(user);
     }
 }

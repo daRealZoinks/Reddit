@@ -1,9 +1,9 @@
+using System.Text;
 using Core.Services;
 using DataLayer;
 using DataLayer.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,24 +24,27 @@ builder.Services.AddSingleton<ICommunityCollectionService, CommunityCollectionSe
 builder.Services.AddSingleton<IPostCollectionService, PostCollectionService>();
 
 // Configure authentication
-builder.Services.AddAuthentication(options => {
-	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
-	options.RequireHttpsMetadata = false;
-	options.SaveToken = true;
-	options.TokenValidationParameters = new TokenValidationParameters {
-		ValidateIssuer = false,
-		ValidateAudience = false,
-		ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		ClockSkew = TimeSpan.Zero,
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero,
 
-		ValidIssuer = "Backend",
-		ValidAudience = "Frontend",
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
-	};
+        ValidIssuer = "Backend",
+        ValidAudience = "Frontend",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
+    };
 });
 
 builder.Services.AddControllers();
@@ -53,9 +56,10 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if(app.Environment.IsDevelopment()) {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
