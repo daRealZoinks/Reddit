@@ -13,6 +13,7 @@
                     <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn Header="Content" DisplayMemberBinding="{Binding Content}" />
                     <GridViewColumn Header="Author" DisplayMemberBinding="{Binding AuthorId}" />
+                    <GridViewColumn Header="Community" DisplayMemberBinding="{Binding CommunityId}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -41,6 +42,10 @@
             <StackPanel>
                 <TextBlock Text="Author" />
                 <ComboBox Name="AuthorComboBox" Width="174" />
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Community" />
+                <ComboBox Name="CommunityComboBox" Width="174" />
             </StackPanel>
         </StackPanel>
     </Grid>

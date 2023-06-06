@@ -10,4 +10,9 @@ public class Community : BaseEntity
 
     public List<User> Users { get; set; } = new();
     public List<Post> Posts { get; set; } = new();
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

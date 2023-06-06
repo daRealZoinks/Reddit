@@ -1,9 +1,9 @@
-﻿using System;
+﻿using RedditPublicAPI;
+using RedditPublicAPI.Entities;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using RedditPublicAPI;
-using RedditPublicAPI.Entities;
 
 namespace RedditClient.Windows;
 
@@ -22,6 +22,7 @@ public partial class PostCrud : Window
     private async void Initialize()
     {
         AuthorComboBox.ItemsSource = await Users.GetUsers(App.Token);
+        CommunityComboBox.ItemsSource = await Communities.GetCommunities(App.Token);
     }
 
     private async void GetButton_Click(object sender, RoutedEventArgs e)
@@ -51,7 +52,8 @@ public partial class PostCrud : Window
                 PostDate = PostDateCalendar.DisplayDate,
                 Title = TitleTextBox.Text,
                 Content = ContentTextBox.Text,
-                AuthorId = ((User)AuthorComboBox.SelectedItem).Id
+                AuthorId = ((User)AuthorComboBox.SelectedItem).Id,
+                CommunityId = ((Community)CommunityComboBox.SelectedItem).Id
             };
 
             await Posts.AddPost(post, App.Token);
@@ -75,6 +77,7 @@ public partial class PostCrud : Window
             post.Title = TitleTextBox.Text;
             post.Content = ContentTextBox.Text;
             post.AuthorId = ((User)AuthorComboBox.SelectedItem).Id;
+            post.CommunityId = ((Community)CommunityComboBox.SelectedItem).Id;
 
             Posts.UpdatePost(post, App.Token);
         }
@@ -110,5 +113,6 @@ public partial class PostCrud : Window
         TitleTextBox.Text = post.Title;
         ContentTextBox.Text = post.Content;
         AuthorComboBox.SelectedItem = post.Author;
+        CommunityComboBox.SelectedItem = post.Community;
     }
 }
