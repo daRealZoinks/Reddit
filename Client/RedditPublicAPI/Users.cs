@@ -111,7 +111,7 @@ public static class Users
                 Role = Role.User
             };
 
-            var response = await httpClient.PutAsJsonAsync($"{URI}/{user.Id}", userPayloadDto);
+            var response = await httpClient.PutAsJsonAsync($"{URI}", userPayloadDto);
 
             response.EnsureSuccessStatusCode();
         }
