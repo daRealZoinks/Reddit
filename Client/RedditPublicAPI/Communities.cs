@@ -1,7 +1,7 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using RedditPublicAPI.Dtos;
+﻿using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Entities;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
@@ -43,7 +43,7 @@ public static class Communities
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        CommunityPayloadDto communityPayloadDto = new()
+        CommunityDto communityDto = new()
         {
             Name = community.Name,
             Description = community.Description,
@@ -52,7 +52,7 @@ public static class Communities
 
         try
         {
-            var response = await httpClient.PostAsJsonAsync(URI, communityPayloadDto);
+            var response = await httpClient.PostAsJsonAsync(URI, communityDto);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
@@ -82,7 +82,7 @@ public static class Communities
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        CommunityPayloadDto communityPayloadDto = new()
+        CommunityDto communityDto = new()
         {
             Id = community.Id,
             Name = community.Name,
@@ -92,7 +92,7 @@ public static class Communities
 
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"{URI}", communityPayloadDto);
+            var response = await httpClient.PutAsJsonAsync($"{URI}", communityDto);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)

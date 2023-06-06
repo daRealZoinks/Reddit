@@ -1,8 +1,8 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using RedditPublicAPI.Dtos;
+﻿using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Entities;
 using RedditPublicAPI.Enums;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
@@ -111,7 +111,7 @@ public static class Users
                 Role = Role.User
             };
 
-            var response = await httpClient.PutAsJsonAsync($"{URI}", userPayloadDto);
+            var response = await httpClient.PutAsJsonAsync(URI, userPayloadDto);
 
             response.EnsureSuccessStatusCode();
         }

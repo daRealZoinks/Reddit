@@ -1,7 +1,7 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using RedditPublicAPI.Dtos;
+﻿using RedditPublicAPI.Dtos;
 using RedditPublicAPI.Entities;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace RedditPublicAPI;
 
@@ -42,7 +42,7 @@ public static class Achievements
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        AchievementPayloadDto achievementPayloadDto = new()
+        AchievementDto achievementDto = new()
         {
             Name = achievement.Name,
             Description = achievement.Description,
@@ -51,7 +51,7 @@ public static class Achievements
 
         try
         {
-            var response = await httpClient.PostAsJsonAsync(URI, achievementPayloadDto);
+            var response = await httpClient.PostAsJsonAsync(URI, achievementDto);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
@@ -81,7 +81,7 @@ public static class Achievements
         using HttpClient httpClient = new();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        AchievementPayloadDto achievementPayloadDto = new()
+        AchievementDto achievementDto = new()
         {
             Id = achievement.Id,
             Name = achievement.Name,
@@ -91,7 +91,7 @@ public static class Achievements
 
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"{URI}", achievementPayloadDto);
+            var response = await httpClient.PutAsJsonAsync($"{URI}", achievementDto);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
