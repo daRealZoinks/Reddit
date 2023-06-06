@@ -25,7 +25,8 @@ public static class PostMappingExtension
             PostDate = post.PostDate,
             Title = post.Title,
             Content = post.Content,
-            AuthorId = post.AuthorId
+            AuthorId = post.AuthorId,
+            CommunityId = post.CommunityId
         };
 
         return result;

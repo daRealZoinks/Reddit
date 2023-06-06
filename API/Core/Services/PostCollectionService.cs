@@ -42,7 +42,7 @@ public class PostCollectionService : IPostCollectionService
         post.Title = entity.Title;
         post.Content = entity.Content;
         post.AuthorId = entity.AuthorId;
-        post.Author = entity.Author; // TODO: is this ok here?
+        post.CommunityId = entity.CommunityId;
 
         _unitOfWork.PostsRepository.Update(entity);
 
@@ -79,7 +79,8 @@ public class PostCollectionService : IPostCollectionService
             PostDate = postDto.PostDate,
             Title = postDto.Title,
             Content = postDto.Content,
-            AuthorId = postDto.AuthorId
+            AuthorId = postDto.AuthorId,
+            CommunityId = postDto.CommunityId
         };
 
         Add(post);
@@ -93,6 +94,7 @@ public class PostCollectionService : IPostCollectionService
         post.Title = postDto.Title;
         post.Content = postDto.Content;
         post.AuthorId = postDto.AuthorId;
+        post.CommunityId = postDto.CommunityId;
 
         Update(post);
     }
