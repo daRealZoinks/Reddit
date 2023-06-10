@@ -1,16 +1,16 @@
-﻿using RedditPublicAPI;
-using RedditPublicAPI.Entities;
-using RedditPublicAPI.Enums;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using RedditPublicAPI;
+using RedditPublicAPI.Entities;
+using RedditPublicAPI.Enums;
 
 namespace RedditClient.Windows;
 
 /// <summary>
 ///     Interaction logic for UserCrud.xaml
-/// </summary> 
+/// </summary>
 public partial class UserCrud : Window
 {
     private readonly ObservableCollection<User> _users = new();

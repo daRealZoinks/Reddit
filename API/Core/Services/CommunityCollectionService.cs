@@ -4,84 +4,114 @@ using DataLayer.Entities;
 using DataLayer.Mappings;
 
 namespace Core.Services;
-public class CommunityCollectionService : ICommunityCollectionService {
-	private readonly UnitOfWork _unitOfWork;
 
-	public CommunityCollectionService(UnitOfWork unitOfWork) {
-		_unitOfWork = unitOfWork;
-	}
+public class CommunityCollectionService : ICommunityCollectionService
+{
+    private readonly UnitOfWork _unitOfWork;
 
-	public void Add(Community entity) {
-		_unitOfWork.CommunityRepository.Add(entity);
+    public CommunityCollectionService(UnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
-		_unitOfWork.SaveChanges();
-	}
+    public List<Community> GetAll()
+    {
+        var results = _unitOfWork.CommunityRepository.GetAll();
 
-	public List<Community> GetAll() {
-		var results = _unitOfWork.CommunityRepository.GetAll();
+        return results;
+    }
 
-		return results;
-	}
+    public Community? GetById(int id)
+    {
+        return _unitOfWork.CommunityRepository.GetById(id);
+    }
 
-	public Community? GetById(int id) {
-		return _unitOfWork.CommunityRepository.GetById(id);
-	}
+    public void Add(Community entity)
+    {
+        _unitOfWork.CommunityRepository.Add(entity);
 
-	public void Update(Community entity) {
-		var community = _unitOfWork.CommunityRepository.GetById(entity.Id) ?? throw new Exception("Community not found");
-		community.Name = entity.Name;
-		community.Description = entity.Description;
-		community.ModeratorId = entity.ModeratorId;
-		community.Moderator = entity.Moderator;
+        _unitOfWork.SaveChanges();
+    }
 
-		_unitOfWork.CommunityRepository.Update(entity);
+    public void Delete(int id)
+    {
+        var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
 
-		_unitOfWork.SaveChanges();
-	}
+        _unitOfWork.CommunityRepository.Remove(community);
 
-	public void Delete(int id) {
-		var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
+        _unitOfWork.SaveChanges();
+    }
 
-		_unitOfWork.CommunityRepository.Remove(community);
+    public void Update(Community entity)
+    {
+        var community = _unitOfWork.CommunityRepository.GetById(entity.Id) ??
+                        throw new Exception("Community not found");
+        community.Name = entity.Name;
+        community.Description = entity.Description;
+        community.ModeratorId = entity.ModeratorId;
+        community.Moderator = entity.Moderator;
+        community.Users = entity.Users;
 
-		_unitOfWork.SaveChanges();
-	}
+        _unitOfWork.CommunityRepository.Update(entity);
 
-	public void AddCommunityDto(CommunityDto communityDto) {
-		Community community = new() {
-			Name = communityDto.Name,
-			Description = communityDto.Description,
-			ModeratorId = communityDto.ModeratorId
-		};
+        _unitOfWork.SaveChanges();
+    }
 
-		Add(community);
-	}
+    public CommunityDto? GetCommunityDtoById(int id)
+    {
+        var communityDto = GetById(id)?.ToCommunityDto();
 
-	public CommunityDto? GetCommunityDtoById(int id) {
-		var communityDto = GetById(id)?.ToCommunityDto();
+        return communityDto;
+    }
 
-		return communityDto;
-	}
+    public List<CommunityDto>? GetCommunityDtos()
+    {
+        var communityDtos = GetAll().ToCommunityDtos();
 
-	public List<CommunityDto>? GetCommunityDtos() {
-		var communityDtos = GetAll().ToCommunityDtos();
+        return communityDtos;
+    }
 
-		return communityDtos;
-	}
+    public void AddCommunityDto(CommunityDto communityDto)
+    {
+        Community community = new()
+        {
+            Name = communityDto.Name,
+            Description = communityDto.Description,
+            ModeratorId = communityDto.ModeratorId
+        };
 
-	public void UpdateCommunityDto(CommunityDto communityDto) {
-		var community = GetById(communityDto.Id) ?? throw new Exception("Community not found");
+        Add(community);
+    }
 
-		community.Name = communityDto.Name;
-		community.Description = communityDto.Description;
-		community.ModeratorId = communityDto.ModeratorId;
+    public void UpdateCommunityDto(CommunityDto communityDto)
+    {
+        var community = GetById(communityDto.Id) ?? throw new Exception("Community not found");
 
-		Update(community);
-	}
+        community.Name = communityDto.Name;
+        community.Description = communityDto.Description;
+        community.ModeratorId = communityDto.ModeratorId;
 
-	public void DeleteCommunityDto(int id) {
-		var community = GetById(id) ?? throw new Exception("Community not found");
+        Update(community);
+    }
 
-		Delete(community.Id);
-	}
+    public void DeleteCommunityDto(int id)
+    {
+        var community = GetById(id) ?? throw new Exception("Community not found");
+
+        Delete(community.Id);
+    }
+
+    public void AddUserToCommunity(Community community, User user)
+    {
+        community.Users.Add(user);
+
+        Update(community);
+    }
+
+    public void RemoveUserFromCommunity(Community community, User user)
+    {
+        community.Users.Remove(user);
+
+        Update(community);
+    }
 }
