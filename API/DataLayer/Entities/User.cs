@@ -11,6 +11,7 @@ public class User : BaseEntity
     public string Description { get; set; }
     public Role Role { get; set; }
 
+    public int ModeratedCommunityId { get; set; }
     public Community? ModeratedCommunity { get; set; }
 
     public List<Message> SentMessages { get; set; } = new();
@@ -18,5 +19,5 @@ public class User : BaseEntity
     public List<Achievement> Achievements { get; set; } = new();
     public List<Post> Posts { get; set; } = new();
     public List<Community> Communities { get; set; } = new();
-	public List<Comment> Comments { get; set; } = new();
+    public List<Comment> Comments { get; set; } = new();
 }
