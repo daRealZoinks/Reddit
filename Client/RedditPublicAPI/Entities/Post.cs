@@ -11,4 +11,9 @@ public class Post : BaseEntity
 
     public int CommunityId { get; set; }
     public Community Community { get; set; }
+
+	public override string ToString()
+	{
+		return Title;
+	}
 }

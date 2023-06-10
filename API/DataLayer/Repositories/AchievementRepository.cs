@@ -2,9 +2,7 @@
 
 namespace DataLayer.Repositories;
 
-public class AchievementRepository : RepositoryBase<Achievement>
-{
-    public AchievementRepository(AppDbContext appDbContext) : base(appDbContext)
-    {
-    }
+public class AchievementRepository : RepositoryBase<Achievement> {
+	public AchievementRepository(AppDbContext appDbContext) : base(appDbContext) {
+	}
 }

@@ -33,9 +33,13 @@ public partial class Menu : Window
         communityCrud.Show();
     }
 
-    private void PostsButton_Click(object sender, RoutedEventArgs e)
-    {
-        PostCrud postCrud = new();
-        postCrud.Show();
-    }
+	private void PostsButton_Click(object sender, RoutedEventArgs e) {
+		PostCrud postCrud = new();
+		postCrud.Show();
+	}
+
+	private void CommentsButton_Click(object sender, RoutedEventArgs e) {
+		CommentCrud commentCrud = new();
+		commentCrud.Show();
+	}
 }

@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603155935_Comments")]
+    partial class Comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace DataLayer.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("AchievementUser");
-                });
-
-            modelBuilder.Entity("CommunityUser", b =>
-                {
-                    b.Property<int>("CommunitiesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CommunitiesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("CommunityUser");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Achievement", b =>
@@ -174,9 +162,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CommunityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -191,8 +176,6 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("CommunityId");
 
                     b.ToTable("Posts");
                 });
@@ -250,19 +233,23 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CommunityUser", b =>
+            modelBuilder.Entity("DataLayer.Entities.Comment", b =>
                 {
-                    b.HasOne("DataLayer.Entities.Community", null)
+                    b.HasOne("DataLayer.Entities.User", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("CommunitiesId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Author");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Community", b =>
@@ -298,25 +285,12 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Entities.Post", b =>
                 {
                     b.HasOne("DataLayer.Entities.User", "Author")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Entities.Community", "Community")
-                        .WithMany("Posts")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
-
-                    b.Navigation("Community");
-                });
-
-            modelBuilder.Entity("DataLayer.Entities.Community", b =>
-                {
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.User", b =>
@@ -324,8 +298,6 @@ namespace DataLayer.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("ModeratedCommunity");
-
-                    b.Navigation("Posts");
 
                     b.Navigation("ReceivedMessages");
 

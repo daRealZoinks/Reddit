@@ -3,14 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer;
 
-public class AppDbContext : DbContext
-{
-    // this is where tables are defined
-    public DbSet<User> Users { get; set; }
-    public DbSet<Message> Messages { get; set; }
-    public DbSet<Achievement> Achievements { get; set; }
-    public DbSet<Community> Communities { get; set; }
-    public DbSet<Post> Posts { get; set; }
+public class AppDbContext : DbContext {
+	// this is where tables are defined
+	public DbSet<User> Users {
+		get; set;
+	}
+	public DbSet<Message> Messages {
+		get; set;
+	}
+	public DbSet<Achievement> Achievements {
+		get; set;
+	}
+	public DbSet<Community> Communities {
+		get; set;
+	}
+	public DbSet<Post> Posts {
+		get; set;
+	}
+	public DbSet<Comment> Comments {
+		get; set;
+	}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -62,6 +74,11 @@ public class AppDbContext : DbContext
             .HasForeignKey<Community>(c => c.ModeratorId)
             .OnDelete(DeleteBehavior.Restrict);
 
+		modelBuilder.Entity<Comment>()
+			.HasOne(c => c.Author)
+			.WithMany(a => a.Comments)
+			.HasForeignKey(c => c.AuthorId)
+			.OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(modelBuilder);
     }

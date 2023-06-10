@@ -19,4 +19,5 @@ public class User : BaseEntity
     public List<Achievement> Achievements { get; set; } = new();
     public List<Post> Posts { get; set; } = new();
     public List<Community> Communities { get; set; } = new();
+    public List<Comment> Comments { get; set; } = new();
 }
