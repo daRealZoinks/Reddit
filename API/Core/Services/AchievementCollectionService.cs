@@ -74,6 +74,13 @@ public class AchievementCollectionService : IAchievementCollectionService
         return achievementDtos;
     }
 
+    public List<AchievementWithUsersDto>? GetAllWithUsersDtos()
+    {
+        var achievementDtos = GetAll().ToAchievementWithUsersDtos();
+
+        return achievementDtos;
+    }
+
     public AchievementDto? GetAchievementDtoById(int id)
     {
         var achievementDtos = GetById(id)?.ToAchievementDto();
@@ -95,14 +102,15 @@ public class AchievementCollectionService : IAchievementCollectionService
     public void AddAchievementToUser(Achievement achievement, User user)
     {
         achievement.Users.Add(user);
+        user.Achievements.Add(achievement);
 
-        Update(achievement);
+        _unitOfWork.SaveChanges();
     }
 
     public void RemoveAchievementFromUser(Achievement achievement, User user)
     {
         achievement.Users.Remove(user);
 
-        Update(achievement);
+        _unitOfWork.SaveChanges();
     }
 }
