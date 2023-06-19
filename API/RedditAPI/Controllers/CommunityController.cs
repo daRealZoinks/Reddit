@@ -45,6 +45,19 @@ public class CommunityController : ControllerBase
         return Ok(result);
     }
 
+    // GET api/<CommunityController>/withusers
+    [HttpGet("withusers")]
+    //[Authorize(Roles = "Administrator")]
+    public IActionResult GetWithUsers()
+    {
+        var result = _communityCollectionService.GetAllCommunityUserDtos();
+
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
+
     // POST api/<CommunityController>/adduser
     [HttpPost("adduser")]
     //[Authorize(Roles = "Administrator")]

@@ -6,7 +6,7 @@ namespace Core.Services;
 public interface IAchievementCollectionService : ICollectionService<Achievement>
 {
     List<AchievementDto>? GetAchievementDtos();
-    List<AchievementWithUsersDto>? GetAllWithUsersDtos();
+    List<AchievementUserDto>? GetAllAchievementUserDtos();
     AchievementDto? GetAchievementDtoById(int id);
     void UpdateAchievementDto(AchievementDto achievementDto);
     void AddAchievementDto(AchievementDto achievementDto);

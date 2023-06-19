@@ -8,6 +8,6 @@ public class Community : BaseEntity
     public int ModeratorId { get; set; }
     public User Moderator { get; set; }
 
-    public List<User> Users { get; set; } = new();
+    public List<CommunityUser> CommunityUsers { get; set; } = new();
     public List<Post> Posts { get; set; } = new();
 }

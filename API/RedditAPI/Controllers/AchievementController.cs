@@ -1,5 +1,4 @@
-﻿using Core.Dtos;
-using Core.Services;
+﻿using Core.Services;
 using DataLayer.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +16,6 @@ public class AchievementController : ControllerBase
     {
         _achievementCollectionService = achievementCollectionService ?? throw new ArgumentNullException(nameof(achievementCollectionService));
         _userCollectionService = userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
-
-        _userCollectionService.GetAll(); //temporary
     }
 
 
@@ -51,7 +48,7 @@ public class AchievementController : ControllerBase
     //[Authorize(Roles = "Administrator")]
     public IActionResult GetWithUsers()
     {
-        var result = _achievementCollectionService.GetAllWithUsersDtos();
+        var result = _achievementCollectionService.GetAllAchievementUserDtos();
 
         if (result == null) return NotFound();
 
@@ -61,10 +58,10 @@ public class AchievementController : ControllerBase
     // POST api/<AchievementController>/addachievementtouser
     [HttpPost("addachievementtouser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult PostAchievementToUser(AchievementToUserDto userToCommunityDto)
+    public IActionResult PostAchievementToUser(AchievementUserDto achievementUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+        var user = _userCollectionService.GetById(achievementUserDto.UserId);
+        var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
 
         if (user == null || achievement == null)
         {
@@ -79,10 +76,10 @@ public class AchievementController : ControllerBase
     // POST api/<AchievementController>/removeachievementfromuser
     [HttpPost("removeachievementfromuser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult DeleteAchievementFromUser(AchievementToUserDto userToCommunityDto)
+    public IActionResult DeleteAchievementFromUser(AchievementUserDto achievementUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+        var user = _userCollectionService.GetById(achievementUserDto.UserId);
+        var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
 
         if (user == null || achievement == null)
         {

@@ -29,4 +29,26 @@ public static class CommunityMappingExtension
 
         return result;
     }
+
+    public static List<CommunityUserDto> ToCommunityUserDtos(this List<CommunityUser> communityUsers)
+    {
+        if (communityUsers == null) return null;
+
+        var results = communityUsers.Select(x => x.ToCommunityUserDto()).ToList();
+        return results;
+    }
+
+    public static CommunityUserDto ToCommunityUserDto(this CommunityUser communityUser)
+    {
+        if (communityUser == null) return null;
+
+        var result = new CommunityUserDto
+        {
+            UserId = communityUser.UserId,
+            CommunityId = communityUser.CommunityId
+        };
+
+        return result;
+    }
+
 }

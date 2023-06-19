@@ -28,26 +28,22 @@ public static class AchievementMappingExtension
         return result;
     }
 
-    public static List<AchievementWithUsersDto> ToAchievementWithUsersDtos(this List<Achievement> achievements)
+    public static List<AchievementUserDto> ToAchievementUserDtos(this List<AchievementUser> achievementUsers)
     {
-        if (achievements == null) return null;
+        if (achievementUsers == null) return null;
 
-        var results = achievements.Select(x => x.ToAchievementWithUsersDto()).ToList();
+        var results = achievementUsers.Select(x => x.ToAchievementUserDto()).ToList();
         return results;
     }
 
-    public static AchievementWithUsersDto ToAchievementWithUsersDto(this Achievement achievement)
+    public static AchievementUserDto ToAchievementUserDto(this AchievementUser achievementUser)
     {
-        if (achievement == null) return null;
+        if (achievementUser == null) return null;
 
-        var result = new AchievementWithUsersDto
+        var result = new AchievementUserDto
         {
-            Id = achievement.Id,
-            Name = achievement.Name,
-            Description = achievement.Description,
-            Value = achievement.Value,
-
-            Users = achievement.Users.ToUserDtos(),
+            UserId = achievementUser.UserId,
+            AchievementId = achievementUser.AchievementId
         };
 
         return result;

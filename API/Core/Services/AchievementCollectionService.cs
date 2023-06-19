@@ -74,9 +74,9 @@ public class AchievementCollectionService : IAchievementCollectionService
         return achievementDtos;
     }
 
-    public List<AchievementWithUsersDto>? GetAllWithUsersDtos()
+    public List<AchievementUserDto>? GetAllAchievementUserDtos()
     {
-        var achievementDtos = GetAll().ToAchievementWithUsersDtos();
+        var achievementDtos = _unitOfWork.AchievementUserRepository.GetAll().ToAchievementUserDtos();
 
         return achievementDtos;
     }
@@ -101,15 +101,33 @@ public class AchievementCollectionService : IAchievementCollectionService
 
     public void AddAchievementToUser(Achievement achievement, User user)
     {
-        achievement.Users.Add(user);
-        user.Achievements.Add(achievement);
+        var achievementUser = new AchievementUser
+        {
+            AchievementId = achievement.Id,
+            Achievement = achievement,
+            UserId = user.Id,
+            User = user
+        };
+
+        _unitOfWork.AchievementUserRepository.Add(achievementUser);
+
+        achievement.AchievementUsers.Add(achievementUser);
+        user.AchievementUsers.Add(achievementUser);
 
         _unitOfWork.SaveChanges();
     }
 
     public void RemoveAchievementFromUser(Achievement achievement, User user)
     {
-        achievement.Users.Remove(user);
+        var achievementUser = _unitOfWork.AchievementUserRepository.GetAll()
+            .FirstOrDefault(x => x.AchievementId == achievement.Id && x.UserId == user.Id);
+
+        if (achievementUser == null) return;
+
+        _unitOfWork.AchievementUserRepository.Remove(achievementUser);
+
+        achievement.AchievementUsers.Remove(achievementUser);
+        user.AchievementUsers.Remove(achievementUser);
 
         _unitOfWork.SaveChanges();
     }

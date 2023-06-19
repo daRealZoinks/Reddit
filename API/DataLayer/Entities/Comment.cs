@@ -2,7 +2,7 @@
 
 public class Comment : BaseEntity
 {
-    public DateTime PostDate { get; set; }
+    public DateTimeOffset PostDate { get; set; }
     public string Content { get; set; }
 
     public int PostId { get; set; }

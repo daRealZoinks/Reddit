@@ -12,6 +12,8 @@ public class AppDbContext : DbContext
     public DbSet<Community> Communities { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<AchievementUser> AchievementUsers { get; set; }
+    public DbSet<CommunityUser> CommunityUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -20,7 +22,7 @@ public class AppDbContext : DbContext
 
         // Windows authentication (the one we use)
         optionsBuilder
-            .UseSqlServer("Server=localhost;Database=RedditApp;Integrated Security=SSPI;TrustServerCertificate=True;")
+            .UseNpgsql("Server=localhost;Database=RedditApp;User Id=postgres;Password=123;TrustServerCertificate=True;")
             .LogTo(Console.WriteLine);
     }
 
@@ -74,14 +76,6 @@ public class AppDbContext : DbContext
             .WithMany(a => a.Comments)
             .HasForeignKey(c => c.AuthorId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<User>()
-            .HasMany(u => u.Achievements)
-            .WithMany(a => a.Users);
-
-        modelBuilder.Entity<Achievement>()
-            .HasMany(a => a.Users)
-            .WithMany(u => u.Achievements);
 
         base.OnModelCreating(modelBuilder);
     }

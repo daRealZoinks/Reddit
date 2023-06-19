@@ -30,13 +30,16 @@ public class CommunityCollectionService : ICommunityCollectionService
     {
         _unitOfWork.CommunityRepository.Add(entity);
 
+        var user = _unitOfWork.UsersRepository.GetById(entity.ModeratorId) ?? throw new Exception("User not found");
+
+        user.ModeratedCommunity = entity;
+
         _unitOfWork.SaveChanges();
     }
 
     public void Delete(int id)
     {
         var community = _unitOfWork.CommunityRepository.GetById(id) ?? throw new Exception("Community not found");
-
         _unitOfWork.CommunityRepository.Remove(community);
 
         _unitOfWork.SaveChanges();
@@ -50,7 +53,6 @@ public class CommunityCollectionService : ICommunityCollectionService
         community.Description = entity.Description;
         community.ModeratorId = entity.ModeratorId;
         community.Moderator = entity.Moderator;
-        community.Users = entity.Users;
 
         _unitOfWork.CommunityRepository.Update(entity);
 
@@ -69,6 +71,13 @@ public class CommunityCollectionService : ICommunityCollectionService
         var communityDtos = GetAll().ToCommunityDtos();
 
         return communityDtos;
+    }
+
+    public List<CommunityUserDto>? GetAllCommunityUserDtos()
+    {
+        var communityUserDtos = _unitOfWork.CommunityUserRepository.GetAll().ToCommunityUserDtos();
+
+        return communityUserDtos;
     }
 
     public void AddCommunityDto(CommunityDto communityDto)
@@ -103,15 +112,34 @@ public class CommunityCollectionService : ICommunityCollectionService
 
     public void AddUserToCommunity(Community community, User user)
     {
-        community.Users.Add(user);
+        var communityUser = new CommunityUser
+        {
+            CommunityId = community.Id,
+            Community = community,
+            UserId = user.Id,
+            User = user
+        };
 
-        Update(community);
+        _unitOfWork.CommunityUserRepository.Add(communityUser);
+
+        community.CommunityUsers.Add(communityUser);
+        user.CommunityUsers.Add(communityUser);
+
+        _unitOfWork.SaveChanges();
     }
 
     public void RemoveUserFromCommunity(Community community, User user)
     {
-        community.Users.Remove(user);
+        var communityUser = _unitOfWork.CommunityUserRepository.GetAll()
+            .FirstOrDefault(x => x.CommunityId == community.Id && x.UserId == user.Id);
 
-        Update(community);
+        if (communityUser == null) return;
+
+        _unitOfWork.CommunityUserRepository.Remove(communityUser);
+
+        community.CommunityUsers.Remove(communityUser);
+        user.CommunityUsers.Remove(communityUser);
+
+        _unitOfWork.SaveChanges();
     }
 }

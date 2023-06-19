@@ -6,6 +6,7 @@ namespace Core.Services;
 public interface ICommunityCollectionService : ICollectionService<Community>
 {
     List<CommunityDto>? GetCommunityDtos();
+    List<CommunityUserDto>? GetAllCommunityUserDtos();
     CommunityDto? GetCommunityDtoById(int id);
     void AddCommunityDto(CommunityDto communityDto);
     void UpdateCommunityDto(CommunityDto communityDto);

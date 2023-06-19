@@ -1,13 +1,12 @@
 ﻿using Core.Services;
 using DataLayer.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CommentController : ControllerBase
 {
     private readonly ICommentCollectionService _commentCollectionService;
