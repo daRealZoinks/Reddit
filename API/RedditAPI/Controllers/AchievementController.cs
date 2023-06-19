@@ -1,14 +1,12 @@
-﻿using Core.Dtos;
-using Core.Services;
+﻿using Core.Services;
 using DataLayer.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class AchievementController : ControllerBase
 {
     private readonly IAchievementCollectionService _achievementCollectionService;
@@ -23,7 +21,7 @@ public class AchievementController : ControllerBase
 
     // GET: api/<AchievementController>
     [HttpGet]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
         var result = _achievementCollectionService.GetAchievementDtos();
@@ -35,7 +33,7 @@ public class AchievementController : ControllerBase
 
     // GET api/<AchievementController>/5
     [HttpGet("{id:int}")]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
         var result = _achievementCollectionService.GetAchievementDtoById(id);
@@ -45,13 +43,25 @@ public class AchievementController : ControllerBase
         return Ok(result);
     }
 
+    // GET api/<AchievementController>/withusers
+    [HttpGet("withusers")]
+    //[Authorize(Roles = "Administrator")]
+    public IActionResult GetWithUsers()
+    {
+        var result = _achievementCollectionService.GetAllAchievementUserDtos();
+
+        if (result == null) return NotFound();
+
+        return Ok(result);
+    }
+
     // POST api/<AchievementController>/addachievementtouser
     [HttpPost("addachievementtouser")]
-    [Authorize(Roles = "Administrator")]
-    public IActionResult PostAchievementToUser(AchievementToUserDto userToCommunityDto)
+    //[Authorize(Roles = "Administrator")]
+    public IActionResult PostAchievementToUser([FromBody] AchievementUserDto achievementUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+        var user = _userCollectionService.GetById(achievementUserDto.UserId);
+        var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
 
         if (user == null || achievement == null)
         {
@@ -65,15 +75,15 @@ public class AchievementController : ControllerBase
 
     // POST api/<AchievementController>/removeachievementfromuser
     [HttpPost("removeachievementfromuser")]
-    [Authorize(Roles = "Administrator")]
-    public IActionResult DeleteAchievementFromUser(AchievementToUserDto userToCommunityDto)
+    //[Authorize(Roles = "Administrator")]
+    public IActionResult DeleteAchievementFromUser([FromBody] AchievementUserDto achievementUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var achievement = _achievementCollectionService.GetById(userToCommunityDto.AchievementId);
+        var user = _userCollectionService.GetById(achievementUserDto.UserId);
+        var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
 
         if (user == null || achievement == null)
         {
-            return BadRequest("Could not remove user from community.");
+            return BadRequest("Could not remove user from achievement.");
         }
 
         _achievementCollectionService.RemoveAchievementFromUser(achievement, user);
@@ -83,7 +93,7 @@ public class AchievementController : ControllerBase
 
     // POST api/<AchievementController>
     [HttpPost]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public IActionResult Post([FromBody] AchievementDto achievementPayloadDto)
     {
         _achievementCollectionService.AddAchievementDto(achievementPayloadDto);
@@ -93,7 +103,7 @@ public class AchievementController : ControllerBase
 
     // PUT api/<AchievementController>
     [HttpPut]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public IActionResult Put([FromBody] AchievementDto achievementDto)
     {
         _achievementCollectionService.UpdateAchievementDto(achievementDto);
@@ -103,7 +113,7 @@ public class AchievementController : ControllerBase
 
     // DELETE api/<AchievementController>/5
     [HttpDelete("{id:int}")]
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public IActionResult Delete([FromRoute] int id)
     {
         _achievementCollectionService.Delete(id);

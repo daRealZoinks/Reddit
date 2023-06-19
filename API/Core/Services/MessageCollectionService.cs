@@ -58,7 +58,7 @@ public class MessageCollectionService : IMessageCollectionService
         var message = new Message
         {
             Content = postMessageDto.Content,
-            DateSent = DateTime.Now,
+            DateSent = DateTimeOffset.Now.UtcDateTime,
             SenderId = postMessageDto.SenderId,
             ReceiverId = postMessageDto.ReceiverId
         };

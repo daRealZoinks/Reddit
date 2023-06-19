@@ -1,9 +1,9 @@
-using System.Text;
 using Core.Services;
 using DataLayer;
 using DataLayer.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,8 @@ builder.Services.AddSingleton<AchievementRepository>();
 builder.Services.AddSingleton<CommunityRepository>();
 builder.Services.AddSingleton<PostsRepository>();
 builder.Services.AddSingleton<CommentsRepository>();
+builder.Services.AddSingleton<AchievementUserRepository>();
+builder.Services.AddSingleton<CommunityUserRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 
 builder.Services.AddSingleton<AuthorizationService>();

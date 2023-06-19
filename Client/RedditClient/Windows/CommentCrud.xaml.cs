@@ -7,92 +7,109 @@ using System.Windows.Controls;
 
 namespace RedditClient.Windows;
 
-public partial class CommentCrud : Window {
-	private readonly ObservableCollection<Comment> _comments = new();
+public partial class CommentCrud : Window
+{
+    private readonly ObservableCollection<Comment> _comments = new();
 
-	public CommentCrud() {
-		InitializeComponent();
-		CommentsListView.ItemsSource = _comments;
+    public CommentCrud()
+    {
+        InitializeComponent();
+        CommentsListView.ItemsSource = _comments;
 
-		Initialize();
-	}
+        Initialize();
+    }
 
-	private async void Initialize() {
-		PostComboBox.ItemsSource = await Posts.GetPosts(App.Token);
-		AuthorComboBox.ItemsSource = await Users.GetUsers(App.Token);
-	}
+    private async void Initialize()
+    {
+        PostComboBox.ItemsSource = await Posts.GetPosts(App.Token);
+        AuthorComboBox.ItemsSource = await Users.GetUsers(App.Token);
+    }
 
-	private async void GetButton_Click(object sender, RoutedEventArgs e) {
-		try {
-			var comments = await Comments.GetComments(App.Token);
+    private async void GetButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var comments = await Comments.GetComments(App.Token);
 
-			_comments.Clear();
+            _comments.Clear();
 
-			if(comments is not null)
-				foreach(var comment in comments)
-					_comments.Add(comment);
-		}
-		catch(Exception ex) {
-			MessageBox.Show(ex.Message);
-		}
-	}
+            if (comments is not null)
+                foreach (var comment in comments)
+                    _comments.Add(comment);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-	private async void CreateButton_Click(object sender, RoutedEventArgs e) {
-		try {
-			Comment comment = new() {
-				PostDate = PostDateCalendar.DisplayDate,
-				Content = ContentTextBox.Text,
-				PostId = ((Post)PostComboBox.SelectedItem).Id,
-				AuthorId = ((User)AuthorComboBox.SelectedItem).Id
-			};
+    private async void CreateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Comment comment = new()
+            {
+                PostDate = PostDateCalendar.DisplayDate,
+                Content = ContentTextBox.Text,
+                PostId = ((Post)PostComboBox.SelectedItem).Id,
+                AuthorId = ((User)AuthorComboBox.SelectedItem).Id
+            };
 
-			await Comments.AddComment(comment, App.Token);
+            await Comments.AddComment(comment, App.Token);
 
-			_comments.Add(comment);
-		}
-		catch(Exception ex) {
-			MessageBox.Show(ex.Message);
-		}
-	}
+            _comments.Add(comment);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-	private void UpdateButton_Click(object sender, RoutedEventArgs e) {
-		try {
-			if(CommentsListView.SelectedValue is not Comment comment)
-				return;
+    private void UpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (CommentsListView.SelectedValue is not Comment comment)
+                return;
 
-			comment.PostDate = PostDateCalendar.DisplayDate;
-			comment.Content = ContentTextBox.Text;
-			comment.PostId = ((Post)PostComboBox.SelectedItem).Id;
-			comment.AuthorId = ((User)AuthorComboBox.SelectedItem).Id;
+            comment.PostDate = PostDateCalendar.DisplayDate;
+            comment.Content = ContentTextBox.Text;
+            comment.PostId = ((Post)PostComboBox.SelectedItem).Id;
+            comment.AuthorId = ((User)AuthorComboBox.SelectedItem).Id;
 
-			Comments.UpdateComment(comment, App.Token);
-		}
-		catch(Exception ex) {
-			MessageBox.Show(ex.Message);
-		}
-	}
+            Comments.UpdateComment(comment, App.Token);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-	private void DeleteButton_Click(object sender, RoutedEventArgs e) {
-		try {
-			if(CommentsListView.SelectedValue is not Comment comment)
-				return;
+    private void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (CommentsListView.SelectedValue is not Comment comment)
+                return;
 
-			Comments.DeleteComment(comment, App.Token);
+            Comments.DeleteComment(comment, App.Token);
 
-			_comments.Remove(comment);
-		}
-		catch(Exception ex) {
-			MessageBox.Show(ex.Message);
-		}
-	}
+            _comments.Remove(comment);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-	private void CommentsListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-		if(CommentsListView.SelectedValue is not Comment comment)
-			return;
+    private void CommentsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (CommentsListView.SelectedValue is not Comment comment)
+            return;
 
-		PostDateCalendar.DisplayDate = comment.PostDate;
-		ContentTextBox.Text = comment.Content;
-		PostComboBox.SelectedItem = comment.Post;
-		AuthorComboBox.SelectedItem = comment.Author;
-	}
+        PostDateCalendar.DisplayDate = comment.PostDate.Date;
+        ContentTextBox.Text = comment.Content;
+        PostComboBox.SelectedItem = comment.Post;
+        AuthorComboBox.SelectedItem = comment.Author;
+    }
 }

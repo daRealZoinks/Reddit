@@ -2,7 +2,7 @@
 
 public class Post : BaseEntity
 {
-    public DateTime PostDate { get; set; }
+    public DateTimeOffset PostDate { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
 

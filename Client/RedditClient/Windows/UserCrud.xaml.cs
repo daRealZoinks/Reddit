@@ -1,10 +1,10 @@
-﻿using System;
+﻿using RedditPublicAPI;
+using RedditPublicAPI.Entities;
+using RedditPublicAPI.Enums;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using RedditPublicAPI;
-using RedditPublicAPI.Entities;
-using RedditPublicAPI.Enums;
 
 namespace RedditClient.Windows;
 
@@ -106,7 +106,7 @@ public partial class UserCrud : Window
         UsernameTextBox.Text = user.Username;
         EmailTextBox.Text = user.Email;
         PasswordHashTextBox.Text = user.PasswordHash;
-        AccountCreationDateCalendar.SelectedDate = user.AccountCreationDate;
+        AccountCreationDateCalendar.SelectedDate = user.AccountCreationDate.Date;
         DescriptionTextBox.Text = user.Description;
     }
 }

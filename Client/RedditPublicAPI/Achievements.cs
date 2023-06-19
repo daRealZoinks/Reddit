@@ -37,6 +37,76 @@ public static class Achievements
         }
     }
 
+    public static async Task<List<AchievementUser>> GetWithUsers(string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            var response = await httpClient.GetAsync($"{URI}/withusers");
+            response.EnsureSuccessStatusCode();
+
+            var achievementUserDtos = await response.Content.ReadFromJsonAsync<List<AchievementUserDto>>() ??
+                                  throw new Exception("Failed to retrieve achievement data.");
+            var achievementUsers = achievementUserDtos.Select(achievementUserDto => new AchievementUser
+            {
+                AchievementId = achievementUserDto.AchievementId,
+                UserId = achievementUserDto.UserId
+            }).ToList();
+
+            return achievementUsers;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to retrieve achievement data from {URI}. {ex.Message}", ex);
+        }
+    }
+
+    public static async Task AddAchivementToUser(Achievement achievement, User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        AchievementUserDto achievementUserDto = new()
+        {
+            AchievementId = achievement.Id,
+            UserId = user.Id
+        };
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/addachievementtouser", achievementUserDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to add achievement data to {URI}. {ex.Message}", ex);
+        }
+    }
+
+    public static async Task RemoveAchivementFromUser(Achievement achievement, User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        AchievementUserDto achievementUserDto = new()
+        {
+            AchievementId = achievement.Id,
+            UserId = user.Id
+        };
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/removeachievementfromuser", achievementUserDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to remove achievement data from {URI}. {ex.Message}", ex);
+        }
+    }
+
     public static async Task AddAchievement(Achievement achievement, string token)
     {
         using HttpClient httpClient = new();

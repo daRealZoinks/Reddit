@@ -110,7 +110,7 @@ public class UserCollectionService : IUserCollectionService
             Username = string.Empty,
             Email = payload.Email,
             PasswordHash = hashedPassword,
-            AccountCreationDate = DateTime.Now,
+            AccountCreationDate = DateTimeOffset.Now.UtcDateTime,
             Description = string.Empty,
             Role = payload.Role
         };
