@@ -1,5 +1,4 @@
-﻿using Core.Dtos;
-using Core.Services;
+﻿using Core.Services;
 using DataLayer.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,10 +60,10 @@ public class CommunityController : ControllerBase
     // POST api/<CommunityController>/adduser
     [HttpPost("adduser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult PostUserToCommunity(UserToCommunityDto userToCommunityDto)
+    public IActionResult PostUserToCommunity([FromBody] CommunityUserDto communityUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var community = _communityCollectionService.GetById(userToCommunityDto.CommunityId);
+        var user = _userCollectionService.GetById(communityUserDto.UserId);
+        var community = _communityCollectionService.GetById(communityUserDto.CommunityId);
 
         if (user == null || community == null)
         {
@@ -77,12 +76,12 @@ public class CommunityController : ControllerBase
     }
 
     // POST api/<CommunityController>/removeuser
-    [HttpDelete("removeuser")]
+    [HttpPost("removeuser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult DeleteUserFromCommunity(UserToCommunityDto userToCommunityDto)
+    public IActionResult DeleteUserFromCommunity([FromBody] CommunityUserDto communityUserDto)
     {
-        var user = _userCollectionService.GetById(userToCommunityDto.UserId);
-        var community = _communityCollectionService.GetById(userToCommunityDto.CommunityId);
+        var user = _userCollectionService.GetById(communityUserDto.UserId);
+        var community = _communityCollectionService.GetById(communityUserDto.CommunityId);
 
         if (user == null || community == null)
         {

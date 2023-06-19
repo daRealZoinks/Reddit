@@ -1,9 +1,9 @@
-﻿using System;
+﻿using RedditPublicAPI;
+using RedditPublicAPI.Entities;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using RedditPublicAPI;
-using RedditPublicAPI.Entities;
 
 namespace RedditClient.Windows;
 
@@ -111,7 +111,7 @@ public partial class MessageCrud : Window
             return;
 
         ContentTextBox.Text = message.Content;
-        DateSentCalendar.DisplayDate = message.DateSent;
+        DateSentCalendar.DisplayDate = message.DateSent.Date;
         SenderComboBox.SelectedItem = message.Sender;
         ReceiverComboBox.SelectedItem = message.Receiver;
     }

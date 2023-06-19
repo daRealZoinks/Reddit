@@ -109,7 +109,7 @@ public partial class PostCrud : Window
         if (PostsListView.SelectedValue is not Post post)
             return;
 
-        PostDateCalendar.DisplayDate = post.PostDate;
+        PostDateCalendar.DisplayDate = post.PostDate.Date;
         TitleTextBox.Text = post.Title;
         ContentTextBox.Text = post.Content;
         AuthorComboBox.SelectedItem = post.Author;

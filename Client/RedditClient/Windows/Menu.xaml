@@ -6,15 +6,21 @@
         mc:Ignorable="d"
         Title="Menu" Height="450" Width="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Name="UsersButton" Content="Users" Height="41" Width="116" Click="UsersButton_Click" />
-            <Button Name="MessagesButton" Content="Messages" Height="41" Width="116" Click="MessagesButton_Click" />
-            <Button Name="AchievementsButton" Content="Achievements" Height="41" Width="116"
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Name="UsersButton" Content="Users" Height="41" Width="116" Click="UsersButton_Click" />
+                <Button Name="MessagesButton" Content="Messages" Height="41" Width="116" Click="MessagesButton_Click" />
+                <Button Name="AchievementsButton" Content="Achievements" Height="41" Width="116"
                     Click="AchievementsButton_Click" />
-            <Button Name="CommunitiesButton" Content="Communities" Height="41" Width="116"
+                <Button Name="CommunitiesButton" Content="Communities" Height="41" Width="116"
                     Click="CommunitiesButton_Click" />
-            <Button Name="PostsButton" Content="Posts" Height="41" Width="116" Click="PostsButton_Click" />
-            <Button Name="CommentsButton" Content="Comments" Height="41" Width="116" Click="CommentsButton_Click" />
+                <Button Name="PostsButton" Content="Posts" Height="41" Width="116" Click="PostsButton_Click" />
+                <Button Name="CommentsButton" Content="Comments" Height="41" Width="116" Click="CommentsButton_Click" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Name="CommunityUsersButton" Content="CommunityUsers" Height="41" Width="116" Click="CommunityUsersButton_Click" />
+                <Button Name="AchievementUsersButton" Content="AchievementUsers" Height="41" Width="116" Click="AchievementUsersButton_Click" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

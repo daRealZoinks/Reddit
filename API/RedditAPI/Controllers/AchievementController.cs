@@ -58,7 +58,7 @@ public class AchievementController : ControllerBase
     // POST api/<AchievementController>/addachievementtouser
     [HttpPost("addachievementtouser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult PostAchievementToUser(AchievementUserDto achievementUserDto)
+    public IActionResult PostAchievementToUser([FromBody] AchievementUserDto achievementUserDto)
     {
         var user = _userCollectionService.GetById(achievementUserDto.UserId);
         var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
@@ -76,14 +76,14 @@ public class AchievementController : ControllerBase
     // POST api/<AchievementController>/removeachievementfromuser
     [HttpPost("removeachievementfromuser")]
     //[Authorize(Roles = "Administrator")]
-    public IActionResult DeleteAchievementFromUser(AchievementUserDto achievementUserDto)
+    public IActionResult DeleteAchievementFromUser([FromBody] AchievementUserDto achievementUserDto)
     {
         var user = _userCollectionService.GetById(achievementUserDto.UserId);
         var achievement = _achievementCollectionService.GetById(achievementUserDto.AchievementId);
 
         if (user == null || achievement == null)
         {
-            return BadRequest("Could not remove user from community.");
+            return BadRequest("Could not remove user from achievement.");
         }
 
         _achievementCollectionService.RemoveAchievementFromUser(achievement, user);

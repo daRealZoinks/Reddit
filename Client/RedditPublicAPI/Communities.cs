@@ -38,6 +38,76 @@ public static class Communities
         }
     }
 
+    public static async Task<List<CommunityUser>> GetWithUsers(string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            var response = await httpClient.GetAsync($"{URI}/withusers");
+            response.EnsureSuccessStatusCode();
+
+            var communityUserDtos = await response.Content.ReadFromJsonAsync<List<CommunityUserDto>>() ??
+                                 throw new Exception("Failed to retrieve community data.");
+            var communityUsers = communityUserDtos.Select(communityUserDto => new CommunityUser
+            {
+                CommunityId = communityUserDto.CommunityId,
+                UserId = communityUserDto.UserId
+            }).ToList();
+
+            return communityUsers;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to retrieve community data from {URI}. {ex.Message}", ex);
+        }
+    }
+
+    public static async Task AddUserToCommunity(Community community, User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        CommunityUserDto communityUserDto = new()
+        {
+            CommunityId = community.Id,
+            UserId = user.Id
+        };
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/adduser", communityUserDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to add community user data to {URI}. {ex.Message}", ex);
+        }
+    }
+
+    public static async Task RemoveUserFromCommunity(Community community, User user, string token)
+    {
+        using HttpClient httpClient = new();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        CommunityUserDto communityUserDto = new()
+        {
+            CommunityId = community.Id,
+            UserId = user.Id
+        };
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync($"{URI}/removeuser", communityUserDto);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to remove community user data from {URI}. {ex.Message}", ex);
+        }
+    }
+
     public static async Task AddCommunity(Community community, string token)
     {
         using HttpClient httpClient = new();
