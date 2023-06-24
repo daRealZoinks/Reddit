@@ -17,6 +17,7 @@ builder.Services.AddSingleton<PostsRepository>();
 builder.Services.AddSingleton<CommentsRepository>();
 builder.Services.AddSingleton<AchievementUserRepository>();
 builder.Services.AddSingleton<CommunityUserRepository>();
+builder.Services.AddSingleton<VotesRepository>();
 builder.Services.AddSingleton<UnitOfWork>();
 
 builder.Services.AddSingleton<AuthorizationService>();
@@ -26,29 +27,27 @@ builder.Services.AddSingleton<IAchievementCollectionService, AchievementCollecti
 builder.Services.AddSingleton<ICommunityCollectionService, CommunityCollectionService>();
 builder.Services.AddSingleton<IPostCollectionService, PostCollectionService>();
 builder.Services.AddSingleton<ICommentCollectionService, CommentCollectionService>();
+builder.Services.AddSingleton<IVoteCollectionService, VoteCollectionService>();
 
 // Configure authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero,
+builder.Services.AddAuthentication(options => {
+	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+	options.RequireHttpsMetadata = false;
+	options.SaveToken = true;
+	options.TokenValidationParameters = new TokenValidationParameters {
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		ClockSkew = TimeSpan.Zero,
 
-        ValidIssuer = "Backend",
-        ValidAudience = "Frontend",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
-    };
+		ValidIssuer = "Backend",
+		ValidAudience = "Frontend",
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecurityKey"]))
+	};
 });
 
 builder.Services.AddControllers();
@@ -60,10 +59,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+if(app.Environment.IsDevelopment()) {
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
