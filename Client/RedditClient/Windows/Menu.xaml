@@ -16,6 +16,7 @@
                     Click="CommunitiesButton_Click" />
                 <Button Name="PostsButton" Content="Posts" Height="41" Width="116" Click="PostsButton_Click" />
                 <Button Name="CommentsButton" Content="Comments" Height="41" Width="116" Click="CommentsButton_Click" />
+                <Button Name="VotesButton" Content="Votes" Height="41" Width="116" Click="VotesButton_Click" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button Name="CommunityUsersButton" Content="CommunityUsers" Height="41" Width="116" Click="CommunityUsersButton_Click" />
