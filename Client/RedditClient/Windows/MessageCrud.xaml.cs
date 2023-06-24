@@ -53,7 +53,7 @@ public partial class MessageCrud : Window
             Message message = new()
             {
                 Content = ContentTextBox.Text,
-                DateSent = DateSentCalendar.DisplayDate,
+                DateSent = DateSentCalendar.DisplayDate.ToUniversalTime(),
                 SenderId = ((User)SenderComboBox.SelectedItem).Id,
                 ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id
             };
@@ -76,7 +76,7 @@ public partial class MessageCrud : Window
                 return;
 
             message.Content = ContentTextBox.Text;
-            message.DateSent = DateSentCalendar.DisplayDate;
+            message.DateSent = DateSentCalendar.DisplayDate.ToUniversalTime();
             message.SenderId = ((User)SenderComboBox.SelectedItem).Id;
             message.ReceiverId = ((User)ReceiverComboBox.SelectedItem).Id;
 

@@ -49,7 +49,7 @@ public partial class CommentCrud : Window
         {
             Comment comment = new()
             {
-                PostDate = PostDateCalendar.DisplayDate,
+                PostDate = PostDateCalendar.DisplayDate.ToUniversalTime(),
                 Content = ContentTextBox.Text,
                 PostId = ((Post)PostComboBox.SelectedItem).Id,
                 AuthorId = ((User)AuthorComboBox.SelectedItem).Id
@@ -72,7 +72,7 @@ public partial class CommentCrud : Window
             if (CommentsListView.SelectedValue is not Comment comment)
                 return;
 
-            comment.PostDate = PostDateCalendar.DisplayDate;
+            comment.PostDate = PostDateCalendar.DisplayDate.ToUniversalTime();
             comment.Content = ContentTextBox.Text;
             comment.PostId = ((Post)PostComboBox.SelectedItem).Id;
             comment.AuthorId = ((User)AuthorComboBox.SelectedItem).Id;
