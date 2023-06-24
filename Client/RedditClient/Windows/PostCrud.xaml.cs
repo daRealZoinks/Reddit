@@ -49,7 +49,7 @@ public partial class PostCrud : Window
         {
             Post post = new()
             {
-                PostDate = PostDateCalendar.DisplayDate,
+                PostDate = PostDateCalendar.DisplayDate.ToUniversalTime(),
                 Title = TitleTextBox.Text,
                 Content = ContentTextBox.Text,
                 AuthorId = ((User)AuthorComboBox.SelectedItem).Id,
@@ -73,7 +73,7 @@ public partial class PostCrud : Window
             if (PostsListView.SelectedValue is not Post post)
                 return;
 
-            post.PostDate = PostDateCalendar.DisplayDate;
+            post.PostDate = PostDateCalendar.DisplayDate.ToUniversalTime();
             post.Title = TitleTextBox.Text;
             post.Content = ContentTextBox.Text;
             post.AuthorId = ((User)AuthorComboBox.SelectedItem).Id;

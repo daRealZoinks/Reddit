@@ -48,7 +48,7 @@ public partial class UserCrud : Window
                 Username = UsernameTextBox.Text,
                 Email = EmailTextBox.Text,
                 PasswordHash = PasswordHashTextBox.Text,
-                AccountCreationDate = AccountCreationDateCalendar.DisplayDate,
+                AccountCreationDate = AccountCreationDateCalendar.DisplayDate.ToUniversalTime(),
                 Role = Role.User,
                 Description = DescriptionTextBox.Text
             };
@@ -88,7 +88,7 @@ public partial class UserCrud : Window
             user.Username = UsernameTextBox.Text;
             user.Email = EmailTextBox.Text;
             user.PasswordHash = PasswordHashTextBox.Text;
-            user.AccountCreationDate = AccountCreationDateCalendar.DisplayDate;
+            user.AccountCreationDate = AccountCreationDateCalendar.DisplayDate.ToUniversalTime();
             user.Description = DescriptionTextBox.Text;
 
             await Users.UpdateUser(user, App.Token);
