@@ -1,5 +1,6 @@
 ﻿using Core.Services;
 using DataLayer.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -8,7 +9,7 @@ namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class PostController : ControllerBase
 {
     private readonly IPostCollectionService _postCollectionService;
@@ -21,7 +22,7 @@ public class PostController : ControllerBase
 
     // GET: api/<PostController>
     [HttpGet]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
         var result = _postCollectionService.GetPostDtos();
@@ -34,7 +35,7 @@ public class PostController : ControllerBase
 
     // GET api/<PostController>/5
     [HttpGet("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
         var result = _postCollectionService.GetPostDtoById(id);
@@ -47,7 +48,7 @@ public class PostController : ControllerBase
 
     // POST api/<PostController>
     [HttpPost]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Post([FromBody] PostDto postDto)
     {
         _postCollectionService.AddPostDto(postDto);
@@ -57,7 +58,7 @@ public class PostController : ControllerBase
 
     // PUT api/<PostController>
     [HttpPut]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Put([FromBody] PostDto postDto)
     {
         _postCollectionService.UpdatePostDto(postDto);
@@ -67,7 +68,7 @@ public class PostController : ControllerBase
 
     // DELETE api/<PostController>/5
     [HttpDelete("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Delete([FromRoute] int id)
     {
         _postCollectionService.DeletePostDto(id);

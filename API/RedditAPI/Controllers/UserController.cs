@@ -1,5 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -8,7 +9,7 @@ namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserCollectionService _userCollectionService;
@@ -21,7 +22,7 @@ public class UserController : ControllerBase
 
     // GET: api/<UserController>
     [HttpGet]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
         var result = _userCollectionService.GetUserDtos();
@@ -34,7 +35,7 @@ public class UserController : ControllerBase
 
     // GET api/<UserController>/5
     [HttpGet("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
         var result = _userCollectionService.GetUserDtoById(id);
@@ -47,7 +48,7 @@ public class UserController : ControllerBase
 
     // POST api/<UserController>
     [HttpPost]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Post([FromBody] UserPayloadDto payload)
     {
         _userCollectionService.AddUserDto(payload);
@@ -57,7 +58,7 @@ public class UserController : ControllerBase
 
     // PUT api/<UserController>
     [HttpPut]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Put([FromBody] UserPayloadDto payload)
     {
         _userCollectionService.UpdateUserDto(payload);
@@ -67,7 +68,7 @@ public class UserController : ControllerBase
 
     // DELETE api/<UserController>/5
     [HttpDelete("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Delete([FromRoute] int id)
     {
         _userCollectionService.Delete(id);
@@ -77,7 +78,7 @@ public class UserController : ControllerBase
 
     // POST api/<UserController>/register
     [HttpPost("register")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public IActionResult Register(RegisterDto payload)
     {
         var result = _userCollectionService.Register(payload);
@@ -90,7 +91,7 @@ public class UserController : ControllerBase
 
     // POST api/<UserController>/login
     [HttpPost("login")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public IActionResult Login(LoginDto payload)
     {
         var result = _userCollectionService.Login(payload);

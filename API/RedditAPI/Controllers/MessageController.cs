@@ -1,13 +1,14 @@
 ﻿using Core.Dtos;
 using Core.Services;
 using DataLayer.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class MessageController : ControllerBase
 {
     private readonly IMessageCollectionService _messageCollectionService;
@@ -20,7 +21,7 @@ public class MessageController : ControllerBase
 
     // GET: api/<MessageController>
     [HttpGet]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
         var result = _messageCollectionService.GetMessageDtos();
@@ -32,7 +33,7 @@ public class MessageController : ControllerBase
 
     // GET api/<MessageController>/5
     [HttpGet("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
         var result = _messageCollectionService.GetMessageDtoById(id);
@@ -44,7 +45,7 @@ public class MessageController : ControllerBase
 
     // POST api/<MessageController>
     [HttpPost]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Post([FromBody] PostMessageDto postMessageDto)
     {
         _messageCollectionService.AddMessageDto(postMessageDto);
@@ -54,7 +55,7 @@ public class MessageController : ControllerBase
 
     // PUT api/<MessageController>
     [HttpPut]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Put([FromBody] MessageDto messageDto)
     {
         _messageCollectionService.UpdateMessageDto(messageDto);
@@ -64,7 +65,7 @@ public class MessageController : ControllerBase
 
     // DELETE api/<MessageController>/5
     [HttpDelete("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Delete([FromRoute] int id)
     {
         _messageCollectionService.Delete(id);

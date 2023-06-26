@@ -1,12 +1,13 @@
 ﻿using Core.Services;
 using DataLayer.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RedditAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CommunityController : ControllerBase
 {
     private readonly ICommunityCollectionService _communityCollectionService;
@@ -20,7 +21,7 @@ public class CommunityController : ControllerBase
 
     // GET: api/<CommunityController>
     [HttpGet]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get()
     {
         var result = _communityCollectionService.GetCommunityDtos();
@@ -33,7 +34,7 @@ public class CommunityController : ControllerBase
 
     // GET api/<CommunityController>/5
     [HttpGet("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Get([FromRoute] int id)
     {
         var result = _communityCollectionService.GetCommunityDtoById(id);
@@ -46,7 +47,7 @@ public class CommunityController : ControllerBase
 
     // GET api/<CommunityController>/withusers
     [HttpGet("withusers")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult GetWithUsers()
     {
         var result = _communityCollectionService.GetAllCommunityUserDtos();
@@ -59,7 +60,7 @@ public class CommunityController : ControllerBase
 
     // POST api/<CommunityController>/adduser
     [HttpPost("adduser")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult PostUserToCommunity([FromBody] CommunityUserDto communityUserDto)
     {
         var user = _userCollectionService.GetById(communityUserDto.UserId);
@@ -77,7 +78,7 @@ public class CommunityController : ControllerBase
 
     // POST api/<CommunityController>/removeuser
     [HttpPost("removeuser")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult DeleteUserFromCommunity([FromBody] CommunityUserDto communityUserDto)
     {
         var user = _userCollectionService.GetById(communityUserDto.UserId);
@@ -96,7 +97,7 @@ public class CommunityController : ControllerBase
 
     // POST api/<CommunityController>
     [HttpPost]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Post([FromBody] CommunityDto communityDto)
     {
         _communityCollectionService.AddCommunityDto(communityDto);
@@ -106,7 +107,7 @@ public class CommunityController : ControllerBase
 
     // PUT api/<CommunityController>
     [HttpPut]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Put([FromBody] CommunityDto communityDto)
     {
         _communityCollectionService.UpdateCommunityDto(communityDto);
@@ -116,7 +117,7 @@ public class CommunityController : ControllerBase
 
     // DELETE api/<CommunityController>/5
     [HttpDelete("{id:int}")]
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Delete([FromRoute] int id)
     {
         _communityCollectionService?.DeleteCommunityDto(id);
